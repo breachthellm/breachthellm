@@ -1,0 +1,46 @@
+services:
+  mongodb:
+    image: mongo:7
+    container_name: btl-mongodb
+    restart: unless-stopped
+    volumes:
+      - mongo_data:/data/db
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: btl-ollama
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+
+  backend:
+    build: ./backend
+    container_name: btl-backend
+    restart: unless-stopped
+    ports:
+      - "4000:4000"
+    environment:
+      - PORT=4000
+      - AI_BACKEND_MODE=${AI_BACKEND_MODE:-local}
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+      - MONGO_URI=mongodb://mongodb:27017/breachthellm
+      - OLLAMA_HOST=http://ollama:11434
+    depends_on:
+      - mongodb
+      - ollama
+
+  frontend:
+    build: ./frontend
+    container_name: btl-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+volumes:
+  mongo_data:
+  ollama_data:

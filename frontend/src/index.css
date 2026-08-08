@@ -1,0 +1,19 @@
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  background-color: #0b1e2d;
+  color: #f4f4ef;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  text-align: center;
+}
+
+.app h1 {
+  color: #16a394;
+}

@@ -2,8 +2,11 @@
   "name": "breach-the-llm",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
+    "predev": "node scripts/ensure-flag-secret.js",
     "dev": "docker compose up",
+    "predev:build": "node scripts/ensure-flag-secret.js",
     "dev:build": "docker compose up --build",
     "down": "docker compose down"
   }

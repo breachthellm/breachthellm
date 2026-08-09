@@ -1,0 +1,8 @@
+{
+  "id": "veyra-shield",
+  "name": "Veyra Shield",
+  "tagline": "Talk your way past the AI guarding the money.",
+  "org": "Veyra",
+  "description": "A fictional digital bank's AI fraud review assistant.",
+  "levelOrder": ["01-leak-the-rules"]
+}

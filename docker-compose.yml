@@ -26,6 +26,7 @@ services:
       - AI_BACKEND_MODE=${AI_BACKEND_MODE:-local}
       - OPENAI_API_KEY=${OPENAI_API_KEY:-}
       - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+      - FLAG_SECRET=${FLAG_SECRET:-}
       - MONGO_URI=mongodb://mongodb:27017/breachthellm
       - OLLAMA_HOST=http://ollama:11434
     depends_on:

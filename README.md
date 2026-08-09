@@ -39,12 +39,12 @@ v1 is the attack range, deliberately narrow and polished. It ships:
 
 ## Quick Start
 
-**Prerequisites:** Docker and Docker Compose installed.
+**Prerequisites:** Docker, Docker Compose, and Node installed.
 
 ```bash
 git clone https://github.com/breachthellm/breachthellm.git
 cd breachthellm
-docker compose up
+npm run dev
 ```
 
 Then open `http://localhost:3000` and start with Level 1.

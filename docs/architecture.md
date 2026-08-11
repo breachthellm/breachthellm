@@ -15,6 +15,16 @@ The stack runs as a set of Docker Compose services:
 
 By default, the backend talks to a local model through Ollama. This keeps the whole platform offline and free to run. If you set API credentials in `.env`, the backend switches to calling OpenAI or Anthropic instead, useful if you want to see how a hardened production-grade model responds differently than a local one. The switch is a config value, not a code change, the rest of the platform behaves identically either way.
 
+After the first `docker compose up`, the Ollama model needs to be pulled manually into the container before challenges will work:
+
+```
+docker exec -it btl-ollama ollama pull llama3.1:8b
+```
+
+Swap the model name if you've set a different `OLLAMA_MODEL` in `.env`. Automating this pull is planned for a later step.
+
+`llama3.1:8b` is the tested default (about 4.9GB download, 8GB+ RAM recommended). `llama3.2:3b` is available as a lighter alternative but is experimental, the prompt calibration in each level was tuned against 8b, and smaller models may refuse valid techniques inconsistently.
+
 ## Progress and flags
 
 Progress lives in MongoDB, one document per local install, tracking which levels are unlocked, completed, how many hints were used, and when each was completed. Flags are validated server-side against the actual model output for that session, not pattern-matched on the client, so the flag format alone can't be gamed.

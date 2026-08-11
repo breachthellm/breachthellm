@@ -39,7 +39,9 @@ v1 is the attack range, deliberately narrow and polished. It ships:
 
 ## Quick Start
 
-**Prerequisites:** Docker, Docker Compose, and Node installed.
+**Prerequisites:** Docker, Docker Compose, and Node.js (used to run the setup script, not to build the app, everything else happens in containers).
+
+Note: on first run, Breach The LLM downloads a local AI model (~4.9GB) via Ollama. This requires a reasonably modern machine (8GB+ RAM recommended) and a few minutes depending on your connection.
 
 ```bash
 git clone https://github.com/breachthellm/breachthellm.git
@@ -47,7 +49,15 @@ cd breachthellm
 npm run dev
 ```
 
+In a separate terminal, pull the model into the running Ollama container (manual for now, auto-pull is planned for later):
+
+```bash
+docker exec -it btl-ollama ollama pull llama3.1:8b
+```
+
 Then open `http://localhost:3000` and start with Level 1.
+
+Using a lighter local model? Set `OLLAMA_MODEL=llama3.2:3b` in `.env`, note this is experimental, current challenges are calibrated against the larger model and smaller models may behave inconsistently.
 
 By default, Breach The LLM runs on a local model via Ollama, fully offline. To use a real API instead, copy `.env.example` to `.env` and add your OpenAI or Anthropic API key.
 

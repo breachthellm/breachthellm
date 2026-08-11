@@ -12,6 +12,9 @@ import {
   getLevelProgress,
   incrementAttempts,
   completeLevel,
+  isLevelUnlocked,
+  resetLevel,
+  resetPack,
 } from '../progress.js';
 
 const router = Router();
@@ -62,6 +65,13 @@ router.post('/:packId/levels/:levelId/attempt', async (req, res) => {
 
   try {
     const level = await loadLevel(packId, levelId);
+
+    if (!(await isLevelUnlocked(packId, levelId))) {
+      return res
+        .status(403)
+        .json({ error: 'This level is locked. Complete the previous level first.' });
+    }
+
     const systemPrompt = buildSystemPrompt(level);
     const response = await runChat(systemPrompt, message);
 
@@ -99,11 +109,49 @@ router.post('/:packId/levels/:levelId/submit', async (req, res) => {
 
   try {
     await loadLevel(packId, levelId);
+
+    if (!(await isLevelUnlocked(packId, levelId))) {
+      return res
+        .status(403)
+        .json({ error: 'This level is locked. Complete the previous level first.' });
+    }
+
     const correct = verifyFlag(packId, levelId, flag);
     if (correct) {
       await completeLevel(packId, levelId);
     }
     res.json({ correct });
+  } catch (err) {
+    if (err.statusCode) {
+      return res.status(err.statusCode).json({ error: err.message });
+    }
+    console.error(err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+router.post('/:packId/levels/:levelId/reset', async (req, res) => {
+  const { packId, levelId } = req.params;
+
+  try {
+    await loadLevel(packId, levelId);
+    const levelProgress = await resetLevel(packId, levelId);
+    res.json(levelProgress);
+  } catch (err) {
+    if (err.statusCode) {
+      return res.status(err.statusCode).json({ error: err.message });
+    }
+    console.error(err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+router.post('/:packId/reset', async (req, res) => {
+  const { packId } = req.params;
+
+  try {
+    const progress = await resetPack(packId);
+    res.json(progress);
   } catch (err) {
     if (err.statusCode) {
       return res.status(err.statusCode).json({ error: err.message });

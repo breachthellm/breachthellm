@@ -18,6 +18,14 @@ function progressCollection() {
   return getDb().collection(COLLECTION);
 }
 
+function buildInitialLevels(pack) {
+  const levels = {};
+  pack.levelOrder.forEach((levelId, index) => {
+    levels[levelId] = emptyLevelState(index === 0);
+  });
+  return levels;
+}
+
 export async function ensurePackProgress(packId) {
   const collection = progressCollection();
   const pack = await loadPack(packId);
@@ -25,15 +33,10 @@ export async function ensurePackProgress(packId) {
   const now = new Date();
 
   if (!existing) {
-    const levels = {};
-    pack.levelOrder.forEach((levelId, index) => {
-      levels[levelId] = emptyLevelState(index === 0);
-    });
-
     await collection.insertOne({
       installId: INSTALL_ID,
       packId,
-      levels,
+      levels: buildInitialLevels(pack),
       createdAt: now,
       lastUpdated: now,
     });
@@ -65,6 +68,11 @@ export async function getLevelProgress(packId, levelId) {
   return progress?.levels?.[levelId] ?? null;
 }
 
+export async function isLevelUnlocked(packId, levelId) {
+  const levelProgress = await getLevelProgress(packId, levelId);
+  return levelProgress?.unlocked ?? false;
+}
+
 export async function incrementAttempts(packId, levelId) {
   await progressCollection().updateOne(
     { installId: INSTALL_ID, packId },
@@ -93,4 +101,36 @@ export async function completeLevel(packId, levelId) {
   }
 
   await progressCollection().updateOne({ installId: INSTALL_ID, packId }, update);
+}
+
+export async function resetLevel(packId, levelId) {
+  await progressCollection().updateOne(
+    { installId: INSTALL_ID, packId },
+    {
+      $set: {
+        [`levels.${levelId}.completed`]: false,
+        [`levels.${levelId}.attempts`]: 0,
+        [`levels.${levelId}.hintsUsed`]: 0,
+        [`levels.${levelId}.completedAt`]: null,
+        lastUpdated: new Date(),
+      },
+    }
+  );
+  return getLevelProgress(packId, levelId);
+}
+
+export async function resetPack(packId) {
+  const pack = await loadPack(packId);
+  const now = new Date();
+
+  await progressCollection().updateOne(
+    { installId: INSTALL_ID, packId },
+    {
+      $set: { levels: buildInitialLevels(pack), lastUpdated: now },
+      $setOnInsert: { installId: INSTALL_ID, packId, createdAt: now },
+    },
+    { upsert: true }
+  );
+
+  return getPackProgress(packId);
 }

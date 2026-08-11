@@ -1,16 +1,47 @@
 import { Router } from 'express';
-import { loadLevel, toPublicLevelView, buildSystemPrompt } from '../packs/loader.js';
+import {
+  loadPack,
+  loadLevel,
+  toPublicLevelView,
+  buildSystemPrompt,
+} from '../packs/loader.js';
 import { verifyFlag } from '../flags.js';
 import { runChat } from '../ollama.js';
+import {
+  getPackProgress,
+  getLevelProgress,
+  incrementAttempts,
+  completeLevel,
+} from '../progress.js';
 
 const router = Router();
+
+router.get('/:packId/progress', async (req, res) => {
+  const { packId } = req.params;
+
+  try {
+    await loadPack(packId);
+    const progress = await getPackProgress(packId);
+    if (!progress) {
+      return res.status(404).json({ error: `No progress found for pack: ${packId}` });
+    }
+    res.json(progress);
+  } catch (err) {
+    if (err.statusCode) {
+      return res.status(err.statusCode).json({ error: err.message });
+    }
+    console.error(err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
 
 router.get('/:packId/levels/:levelId', async (req, res) => {
   const { packId, levelId } = req.params;
 
   try {
     const level = await loadLevel(packId, levelId);
-    const solved = false;
+    const levelProgress = await getLevelProgress(packId, levelId);
+    const solved = levelProgress?.completed ?? false;
     res.json(toPublicLevelView(level, { solved }));
   } catch (err) {
     if (err.statusCode) {
@@ -34,10 +65,18 @@ router.post('/:packId/levels/:levelId/attempt', async (req, res) => {
     const systemPrompt = buildSystemPrompt(level);
     const response = await runChat(systemPrompt, message);
 
+    await incrementAttempts(packId, levelId);
+
+    const levelProgress = await getLevelProgress(packId, levelId);
+    const solved = levelProgress?.completed ?? false;
+
     res.json({
       response,
       trace: [
-        { source: 'system', text: '[system prompt redacted until solved]' },
+        {
+          source: 'system',
+          text: solved ? systemPrompt : '[system prompt redacted until solved]',
+        },
         { source: 'user', text: message },
       ],
     });
@@ -61,6 +100,9 @@ router.post('/:packId/levels/:levelId/submit', async (req, res) => {
   try {
     await loadLevel(packId, levelId);
     const correct = verifyFlag(packId, levelId, flag);
+    if (correct) {
+      await completeLevel(packId, levelId);
+    }
     res.json({ correct });
   } catch (err) {
     if (err.statusCode) {

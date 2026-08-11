@@ -38,6 +38,11 @@ async function readJson(filePath, notFoundMessage) {
   }
 }
 
+export async function listPackIds() {
+  const entries = await fs.readdir(PACKS_DIR, { withFileTypes: true });
+  return entries.filter((entry) => entry.isDirectory()).map((entry) => entry.name);
+}
+
 export async function loadPack(packId) {
   assertValidId(packId, 'packId');
   const packJsonPath = path.join(PACKS_DIR, packId, 'pack.json');
@@ -88,7 +93,11 @@ export function toPublicLevelView(level, { solved }) {
     ...publicFields,
     solved,
     ...(solved
-      ? { flag: computeFlag(packId, level.id), postSolveExplanation }
+      ? {
+          flag: computeFlag(packId, level.id),
+          postSolveExplanation,
+          systemPrompt: buildSystemPrompt(level),
+        }
       : {}),
   };
 }

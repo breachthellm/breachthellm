@@ -1,5 +1,8 @@
 import express from 'express';
 import packsRouter from './routes/packs.js';
+import { connectDB } from './db.js';
+import { listPackIds } from './packs/loader.js';
+import { ensurePackProgress } from './progress.js';
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -12,6 +15,20 @@ app.get('/api/health', (req, res) => {
 
 app.use('/api/packs', packsRouter);
 
-app.listen(PORT, () => {
-  console.log(`Backend listening on port ${PORT}`);
+async function start() {
+  await connectDB();
+
+  const packIds = await listPackIds();
+  for (const packId of packIds) {
+    await ensurePackProgress(packId);
+  }
+
+  app.listen(PORT, () => {
+    console.log(`Backend listening on port ${PORT}`);
+  });
+}
+
+start().catch((err) => {
+  console.error('Failed to start backend:', err.message);
+  process.exit(1);
 });

@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 import packsRouter from './routes/packs.js';
 import { connectDB } from './db.js';
 import { listPackIds } from './packs/loader.js';
@@ -7,6 +8,7 @@ import { ensurePackProgress } from './progress.js';
 const app = express();
 const PORT = process.env.PORT || 4000;
 
+app.use(cors());
 app.use(express.json());
 
 app.get('/api/health', (req, res) => {

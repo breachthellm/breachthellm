@@ -38,6 +38,40 @@ router.get('/:packId/progress', async (req, res) => {
   }
 });
 
+router.get('/:packId/levels', async (req, res) => {
+  const { packId } = req.params;
+
+  try {
+    const pack = await loadPack(packId);
+    const progress = await getPackProgress(packId);
+
+    const levels = await Promise.all(
+      pack.levelOrder.map(async (levelId) => {
+        const level = await loadLevel(packId, levelId);
+        const levelProgress = progress?.levels?.[levelId];
+
+        return {
+          id: level.id,
+          title: level.title,
+          teaser: level.teaser,
+          difficulty: level.difficulty,
+          category: level.category,
+          unlocked: levelProgress?.unlocked ?? false,
+          completed: levelProgress?.completed ?? false,
+        };
+      })
+    );
+
+    res.json(levels);
+  } catch (err) {
+    if (err.statusCode) {
+      return res.status(err.statusCode).json({ error: err.message });
+    }
+    console.error(err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 router.get('/:packId/levels/:levelId', async (req, res) => {
   const { packId, levelId } = req.params;
 

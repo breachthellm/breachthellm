@@ -1,19 +1,19 @@
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import TopBar from './components/TopBar.jsx';
-import CaseHeader from './components/CaseHeader.jsx';
-import LevelPage from './components/LevelPage.jsx';
-
-const PACK_ID = 'veyra-shield';
-const LEVEL_ID = '01-leak-the-rules';
+import TransactionQueue from './components/TransactionQueue.jsx';
+import CaseDetail from './components/CaseDetail.jsx';
 
 function App() {
   return (
-    <div className="page">
-      <TopBar />
-      <div className="case-panel">
-        <CaseHeader />
-        <LevelPage packId={PACK_ID} levelId={LEVEL_ID} />
+    <BrowserRouter>
+      <div className="page">
+        <TopBar />
+        <Routes>
+          <Route path="/" element={<TransactionQueue />} />
+          <Route path="/case/:levelId" element={<CaseDetail />} />
+        </Routes>
       </div>
-    </div>
+    </BrowserRouter>
   );
 }
 

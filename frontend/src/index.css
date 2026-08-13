@@ -45,11 +45,13 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
+  width: fit-content;
   font-family: var(--font-mono);
   font-weight: 700;
   font-size: 13px;
   letter-spacing: 0.02em;
   color: var(--muted);
+  text-decoration: none;
 }
 
 .wordmark-dot {
@@ -60,9 +62,9 @@ body {
   box-shadow: 0 0 12px var(--teal);
 }
 
-/* Case panel */
+/* Review panel (shared by the transaction queue and the case detail view) */
 
-.case-panel {
+.review-panel {
   width: min(1200px, 94vw);
   min-height: min(760px, 86vh);
   display: flex;
@@ -74,7 +76,7 @@ body {
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
 }
 
-.case-header {
+.panel-header {
   padding: 30px 44px 22px;
   border-bottom: 1px solid var(--line);
 }
@@ -89,7 +91,7 @@ body {
   color: var(--muted);
 }
 
-.case-meta {
+.panel-meta {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -104,7 +106,7 @@ body {
   color: var(--text);
 }
 
-.case-reviewer {
+.panel-reviewer {
   font-family: var(--font-body);
   font-size: 13px;
   color: var(--muted);
@@ -414,4 +416,90 @@ details[open] .note-marker::before {
 .chat-send-button:disabled {
   background-color: var(--muted);
   cursor: default;
+}
+
+/* Transaction queue */
+
+.queue-title {
+  padding-bottom: 24px;
+  margin-bottom: 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.queue-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+}
+
+.queue-list li {
+  border-bottom: 1px solid var(--line);
+}
+
+.queue-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 20px 16px;
+  border-left: 3px solid transparent;
+  color: inherit;
+  text-decoration: none;
+}
+
+.queue-row-locked {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.queue-row-active {
+  cursor: pointer;
+  border-left-color: var(--teal);
+}
+
+.queue-row-active:hover,
+.queue-row-completed:hover {
+  background-color: var(--bg);
+}
+
+.queue-row-completed {
+  cursor: pointer;
+}
+
+.queue-row-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.queue-row-title {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: 19px;
+  color: var(--text);
+  margin: 0 0 6px;
+}
+
+.queue-row-teaser {
+  font-size: 14px;
+  color: var(--muted);
+  margin: 0 0 8px;
+  line-height: 1.5;
+}
+
+.queue-row-difficulty {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.lock-badge {
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
 }

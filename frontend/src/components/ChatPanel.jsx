@@ -1,12 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 import { postAttempt, ApiError } from '../api.js';
+import TraceModal from './TraceModal.jsx';
 
 let nextMessageId = 1;
 
-function ChatPanel({ packId, levelId }) {
+function ChatPanel({ packId, levelId, solved, systemPrompt }) {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [sending, setSending] = useState(false);
+  const [viewingTraceId, setViewingTraceId] = useState(null);
   const listRef = useRef(null);
 
   useEffect(() => {
@@ -29,7 +31,7 @@ function ChatPanel({ packId, levelId }) {
       const data = await postAttempt(packId, levelId, trimmed);
       setMessages((prev) => [
         ...prev,
-        { id: nextMessageId++, role: 'assistant', text: data.response },
+        { id: nextMessageId++, role: 'assistant', text: data.response, trace: data.trace },
       ]);
     } catch (err) {
       const text = err instanceof ApiError ? err.message : 'Something went wrong.';
@@ -38,6 +40,8 @@ function ChatPanel({ packId, levelId }) {
       setSending(false);
     }
   }
+
+  const viewingTrace = messages.find((message) => message.id === viewingTraceId)?.trace;
 
   return (
     <div className="chat-panel">
@@ -55,19 +59,31 @@ function ChatPanel({ packId, levelId }) {
             );
           }
 
+          const isUser = message.role === 'user';
+
           return (
             <div
               key={message.id}
               className={
-                message.role === 'user'
-                  ? 'chat-message chat-message-user'
-                  : 'chat-message chat-message-assistant'
+                isUser
+                  ? 'chat-message-group chat-message-group-user'
+                  : 'chat-message-group chat-message-group-assistant'
               }
             >
-              {message.role === 'assistant' && (
-                <p className="chat-message-label">Veyra Shield</p>
+              <div className={isUser ? 'chat-message chat-message-user' : 'chat-message chat-message-assistant'}>
+                {!isUser && <p className="chat-message-label">Veyra Shield</p>}
+                <p className="chat-message-text">{message.text}</p>
+              </div>
+
+              {!isUser && message.trace && (
+                <button
+                  type="button"
+                  className="trace-trigger"
+                  onClick={() => setViewingTraceId(message.id)}
+                >
+                  View Trace
+                </button>
               )}
-              <p className="chat-message-text">{message.text}</p>
             </div>
           );
         })}
@@ -102,6 +118,15 @@ function ChatPanel({ packId, levelId }) {
           Send
         </button>
       </form>
+
+      {viewingTrace && (
+        <TraceModal
+          trace={viewingTrace}
+          solved={solved}
+          systemPrompt={systemPrompt}
+          onClose={() => setViewingTraceId(null)}
+        />
+      )}
     </div>
   );
 }

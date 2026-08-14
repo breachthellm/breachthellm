@@ -1,8 +1,10 @@
 :root {
-  /* Breach The LLM brand tokens — TopBar only, nothing else references these */
+  /* Breach The LLM brand tokens — used by TopBar and the Context Trace panel,
+     the two places our own brand deliberately shows through */
   --bg: #0b1220;
   --teal: #2dd4bf;
   --muted: #5b6b85;
+  --text-on-dark: #e8e6dc;
   --font-mono: 'IBM Plex Mono', monospace;
 
   /* Veyra Shield's surfaces — an unrelated, deliberately ordinary enterprise app */
@@ -376,13 +378,29 @@ body {
   padding: 24px 0;
 }
 
-.chat-message {
+.chat-message-group {
+  display: flex;
+  flex-direction: column;
   max-width: 78%;
   margin-bottom: 14px;
 }
 
-.chat-message-user {
+.chat-message-group-user {
   align-self: flex-end;
+  align-items: flex-end;
+}
+
+.chat-message-group-assistant {
+  align-self: flex-start;
+  align-items: flex-start;
+}
+
+.chat-message {
+  width: fit-content;
+  max-width: 100%;
+}
+
+.chat-message-user {
   background-color: var(--veyra-accent);
   border-radius: 10px;
   padding: 10px 14px;
@@ -393,7 +411,6 @@ body {
 }
 
 .chat-message-assistant {
-  align-self: flex-start;
   background-color: var(--veyra-surface);
   border: 1px solid var(--veyra-border);
   border-radius: 10px;
@@ -553,4 +570,123 @@ body {
 
 .solved-summary .level-teaser {
   margin: 0;
+}
+
+/* Context Trace — our brand, deliberately breaking from Veyra's register */
+
+.trace-trigger {
+  margin-top: 6px;
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  color: var(--teal);
+  cursor: pointer;
+}
+
+.trace-trigger:hover {
+  text-decoration: underline;
+}
+
+.trace-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(11, 18, 32, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  z-index: 50;
+}
+
+.trace-modal {
+  width: min(640px, 92vw);
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg);
+  border: 1px solid rgba(45, 212, 191, 0.3);
+  border-radius: 8px;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
+
+.trace-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  padding: 14px 20px;
+  border-bottom: 1px solid rgba(45, 212, 191, 0.2);
+}
+
+.trace-modal-title {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--teal);
+}
+
+.trace-close-button {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.trace-close-button:hover {
+  color: var(--text-on-dark);
+}
+
+.trace-modal-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+.trace-segment {
+  margin-bottom: 20px;
+}
+
+.trace-segment:last-child {
+  margin-bottom: 0;
+}
+
+.trace-segment-label {
+  margin: 0 0 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-on-dark);
+}
+
+.trace-segment-system .trace-segment-label {
+  color: var(--muted);
+}
+
+.trace-segment-user .trace-segment-label {
+  color: var(--teal);
+}
+
+.trace-segment-text {
+  margin: 0;
+  padding: 12px 14px;
+  background-color: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text-on-dark);
+  white-space: pre-wrap;
+  word-break: break-word;
 }

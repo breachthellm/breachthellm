@@ -93,7 +93,12 @@ function LevelPage({ packId, levelId, caseId }) {
 
       <section className="detail-section">
         <h2>Chat with Veyra Shield</h2>
-        <ChatPanel packId={packId} levelId={levelId} />
+        <ChatPanel
+          packId={packId}
+          levelId={levelId}
+          solved={level.solved}
+          systemPrompt={level.systemPrompt}
+        />
       </section>
 
       <section className="detail-section">

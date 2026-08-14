@@ -1,14 +1,23 @@
 :root {
+  /* Breach The LLM brand tokens — TopBar only, nothing else references these */
   --bg: #0b1220;
-  --surface: #12213a;
   --teal: #2dd4bf;
-  --text: #e8e6dc;
   --muted: #5b6b85;
-  --line: rgba(91, 107, 133, 0.3);
-
-  --font-body: 'IBM Plex Sans', sans-serif;
   --font-mono: 'IBM Plex Mono', monospace;
-  --font-serif: 'Source Serif 4', serif;
+
+  /* Veyra Shield's surfaces — an unrelated, deliberately ordinary enterprise app */
+  --veyra-bg: #f4f5f7;
+  --veyra-surface: #ffffff;
+  --veyra-border: #e2e4e9;
+  --veyra-text: #1f2430;
+  --veyra-muted: #6b7280;
+  --veyra-accent: #2563eb;
+  --veyra-danger: #dc2626;
+  --veyra-warning: #d97706;
+  --veyra-success: #16a34a;
+  --veyra-font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial,
+    sans-serif;
+  --veyra-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 
 * {
@@ -17,28 +26,27 @@
 
 body {
   margin: 0;
-  font-family: var(--font-body);
+  font-family: var(--veyra-font);
   background-color: var(--bg);
-  color: var(--text);
+  color: var(--veyra-text);
 }
 
-/* Page */
+/* Page (Breach The LLM's own chrome, a thin top strip now) */
 
 .page {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding: 48px 24px;
   background-color: var(--bg);
-  background-image: linear-gradient(rgba(232, 230, 220, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(232, 230, 220, 0.035) 1px, transparent 1px);
-  background-size: 48px 48px;
 }
 
 .platform-strip {
-  width: min(1200px, 94vw);
-  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 20px;
+  background-color: var(--bg);
+  flex-shrink: 0;
 }
 
 .wordmark {
@@ -62,67 +70,68 @@ body {
   box-shadow: 0 0 12px var(--teal);
 }
 
-/* Review panel (shared by the transaction queue and the case detail view) */
+/* Review panel — Veyra Shield's own application surface */
 
 .review-panel {
-  width: min(1200px, 94vw);
-  min-height: min(760px, 86vh);
+  flex: 1;
+  min-height: 0;
+  margin: 0 20px 20px;
   display: flex;
   flex-direction: column;
-  background-color: var(--surface);
-  border: 1px solid var(--line);
+  background-color: var(--veyra-surface);
+  border: 1px solid var(--veyra-border);
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 1px 3px rgba(16, 24, 40, 0.08), 0 1px 2px rgba(16, 24, 40, 0.04);
+  font-family: var(--veyra-font);
+  color: var(--veyra-text);
 }
 
 .panel-header {
-  padding: 30px 44px 22px;
-  border-bottom: 1px solid var(--line);
-}
-
-.system-label {
-  margin: 0 0 12px;
-  font-family: var(--font-body);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-
-.panel-meta {
   display: flex;
-  flex-wrap: wrap;
+  align-items: center;
   justify-content: space-between;
-  align-items: baseline;
-  gap: 12px;
+  gap: 16px;
+  padding: 16px 28px;
+  border-bottom: 1px solid var(--veyra-border);
+  background-color: var(--veyra-surface);
 }
 
-.case-id {
-  font-family: var(--font-mono);
-  font-size: 13px;
-  letter-spacing: 0.02em;
-  color: var(--text);
+.app-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.app-name {
+  font-weight: 600;
+  color: var(--veyra-text);
+}
+
+.breadcrumb-sep {
+  color: var(--veyra-border);
+}
+
+.breadcrumb-current {
+  color: var(--veyra-muted);
 }
 
 .panel-reviewer {
-  font-family: var(--font-body);
   font-size: 13px;
-  color: var(--muted);
+  color: var(--veyra-muted);
 }
 
-.reviewer-value {
-  font-family: var(--font-mono);
+.panel-reviewer strong {
+  color: var(--veyra-text);
   font-weight: 600;
-  color: var(--text);
 }
 
 /* Case body */
 
 .case-body {
   flex: 1;
-  padding: 36px 44px 56px;
+  padding: 28px 28px 40px;
 }
 
 .case-body-status {
@@ -131,138 +140,213 @@ body {
   align-items: center;
   justify-content: center;
   text-align: center;
-  font-family: var(--font-mono);
-  color: var(--muted);
-}
-
-.error-text::before {
-  content: '[ERROR] ';
-  color: var(--muted);
+  color: var(--veyra-muted);
 }
 
 .error-text {
-  font-family: var(--font-mono);
-  border: 1px solid var(--line);
-  border-radius: 4px;
-  padding: 16px 20px;
-  color: var(--text);
+  border: 1px solid var(--veyra-danger);
+  background-color: rgba(220, 38, 38, 0.06);
+  border-radius: 6px;
+  padding: 14px 18px;
+  color: var(--veyra-danger);
 }
 
-.title-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  padding-bottom: 24px;
-  margin-bottom: 24px;
-  border-bottom: 1px solid var(--line);
-}
-
-.level-title {
-  font-family: var(--font-serif);
-  font-weight: 600;
-  font-size: clamp(28px, 3.4vw, 42px);
-  line-height: 1.2;
-  margin: 0;
-  color: var(--text);
-}
-
-/* Stamp badge, the one bold visual moment */
-
-.stamp-badge {
-  flex-shrink: 0;
-  display: inline-block;
-  transform: rotate(-6deg);
-  font-family: var(--font-mono);
+.page-title {
+  font-family: var(--veyra-font);
   font-weight: 700;
-  font-size: 13px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--teal);
-  border: 1.5px solid var(--teal);
-  border-radius: 3px;
-  padding: 7px 14px;
-  box-shadow: 0 0 0 3px var(--surface), 0 0 0 4.5px var(--teal);
+  font-size: 24px;
+  color: var(--veyra-text);
+  margin: 0 0 20px;
 }
 
-.stamp-word {
-  color: var(--teal);
+/* Metadata grid */
+
+.meta-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 18px;
+  padding: 18px 20px;
+  margin-bottom: 24px;
+  background-color: var(--veyra-bg);
+  border: 1px solid var(--veyra-border);
+  border-radius: 6px;
+}
+
+.meta-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.meta-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--veyra-muted);
+}
+
+.meta-value {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--veyra-text);
+}
+
+.cell-mono {
+  font-family: var(--veyra-mono);
+  font-size: 13px;
 }
 
 .level-teaser {
-  font-size: 17px;
-  color: var(--muted);
-  margin: 0 0 44px;
+  font-size: 15px;
+  color: var(--veyra-muted);
+  margin: 0 0 32px;
   line-height: 1.6;
 }
 
-.level-section {
-  margin-bottom: 36px;
+.detail-section {
+  margin-bottom: 28px;
 }
 
-.level-section h2 {
-  font-family: var(--font-serif);
+.detail-section h2 {
+  font-size: 15px;
   font-weight: 600;
-  font-size: 17px;
-  color: var(--text);
-  margin: 0 0 14px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid var(--line);
+  color: var(--veyra-text);
+  margin: 0 0 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--veyra-border);
 }
 
-.level-section p {
+.detail-section > p {
   line-height: 1.6;
   margin: 0;
+  color: var(--veyra-text);
 }
 
-/* Attached notes */
+/* Notes — a plain FAQ-style disclosure list */
 
-.note-list {
+.faq-list {
   list-style: none;
   margin: 0;
   padding: 0;
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--veyra-border);
 }
 
-.note-list li {
-  border-bottom: 1px solid var(--line);
+.faq-list li {
+  border-bottom: 1px solid var(--veyra-border);
 }
 
-.note-list summary {
+.faq-list summary {
   cursor: pointer;
-  padding: 14px 4px;
-  list-style: none;
-}
-
-.note-list summary::-webkit-details-marker {
-  display: none;
-}
-
-.note-marker::before {
-  content: '[ ]';
-  color: var(--muted);
-  font-family: var(--font-mono);
-  margin-right: 10px;
-}
-
-details[open] .note-marker::before {
-  content: '[x]';
-  color: var(--text);
-}
-
-.note-label {
-  font-family: var(--font-body);
-  font-weight: 500;
+  padding: 12px 4px;
   font-size: 14px;
-  letter-spacing: 0.01em;
-  color: var(--text);
+  font-weight: 500;
+  color: var(--veyra-text);
 }
 
-.note-body {
-  margin: 0 0 16px;
-  padding: 0 4px 0 30px;
-  color: var(--muted);
+.faq-list p {
+  margin: 0 0 14px;
+  padding: 0 4px 0 20px;
+  color: var(--veyra-muted);
   line-height: 1.6;
+}
+
+/* Risk badges */
+
+.risk-badge {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 4px;
+}
+
+.risk-low {
+  color: var(--veyra-success);
+  background-color: rgba(22, 163, 74, 0.12);
+}
+
+.risk-medium {
+  color: var(--veyra-warning);
+  background-color: rgba(217, 119, 6, 0.12);
+}
+
+.risk-high {
+  color: var(--veyra-danger);
+  background-color: rgba(220, 38, 38, 0.12);
+}
+
+.risk-critical {
+  color: #ffffff;
+  background-color: var(--veyra-danger);
+}
+
+/* Transaction queue table */
+
+.queue-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.queue-table thead th {
+  text-align: left;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--veyra-muted);
+  background-color: var(--veyra-bg);
+  padding: 10px 12px;
+  border-top: 1px solid var(--veyra-border);
+  border-bottom: 1px solid var(--veyra-border);
+}
+
+.queue-table td {
+  padding: 14px 12px;
+  border-bottom: 1px solid var(--veyra-border);
+  vertical-align: top;
+}
+
+.queue-row-clickable {
+  cursor: pointer;
+}
+
+.queue-row-clickable:hover {
+  background-color: var(--veyra-bg);
+}
+
+.queue-row-locked {
+  color: var(--veyra-muted);
+}
+
+.queue-row-locked .cell-title {
+  color: var(--veyra-muted);
+}
+
+.cell-title {
+  font-weight: 600;
+  color: var(--veyra-text);
+  margin-bottom: 2px;
+}
+
+.cell-subtext {
+  font-size: 13px;
+  color: var(--veyra-muted);
+}
+
+.cell-status {
+  font-weight: 500;
+}
+
+.status-open {
+  color: var(--veyra-text);
+  font-weight: 600;
+}
+
+.status-closed,
+.status-locked {
+  color: var(--veyra-muted);
 }
 
 /* Chat */
@@ -273,18 +357,20 @@ details[open] .note-marker::before {
 }
 
 .chat-messages {
+  display: flex;
+  flex-direction: column;
   max-height: 360px;
   overflow-y: auto;
-  padding: 20px;
+  padding: 18px;
   margin-bottom: 14px;
-  background-color: var(--bg);
-  border: 1px solid var(--line);
+  background-color: var(--veyra-bg);
+  border: 1px solid var(--veyra-border);
   border-radius: 6px;
 }
 
 .chat-empty {
   margin: 0;
-  color: var(--muted);
+  color: var(--veyra-muted);
   font-size: 14px;
   text-align: center;
   padding: 24px 0;
@@ -292,42 +378,46 @@ details[open] .note-marker::before {
 
 .chat-message {
   max-width: 78%;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 
 .chat-message-user {
-  margin-left: auto;
-  background-color: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 6px;
+  align-self: flex-end;
+  background-color: var(--veyra-accent);
+  border-radius: 10px;
   padding: 10px 14px;
 }
 
+.chat-message-user .chat-message-text {
+  color: #ffffff;
+}
+
 .chat-message-assistant {
-  margin-right: auto;
+  align-self: flex-start;
+  background-color: var(--veyra-surface);
+  border: 1px solid var(--veyra-border);
+  border-radius: 10px;
+  padding: 10px 14px;
 }
 
 .chat-message-label {
   margin: 0 0 4px;
-  font-family: var(--font-body);
   font-size: 11px;
   font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--muted);
+  color: var(--veyra-muted);
 }
 
 .chat-message-text {
   margin: 0;
-  font-size: 15px;
+  font-size: 14px;
   line-height: 1.55;
-  color: var(--text);
+  color: var(--veyra-text);
   white-space: pre-wrap;
 }
 
 .chat-message-error {
   max-width: 100%;
-  margin: 0 0 16px;
+  margin: 0 0 14px;
 }
 
 .chat-typing {
@@ -340,7 +430,7 @@ details[open] .note-marker::before {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background-color: var(--muted);
+  background-color: var(--veyra-muted);
   animation: chat-typing-pulse 1.2s infinite;
 }
 
@@ -355,7 +445,7 @@ details[open] .note-marker::before {
 .chat-typing-caption {
   margin: 0;
   font-size: 12px;
-  color: var(--muted);
+  color: var(--veyra-muted);
 }
 
 @keyframes chat-typing-pulse {
@@ -383,123 +473,38 @@ details[open] .note-marker::before {
 
 .chat-input {
   flex: 1;
-  font-family: var(--font-body);
+  font-family: var(--veyra-font);
   font-size: 14px;
-  color: var(--text);
-  background-color: var(--bg);
-  border: 1px solid var(--line);
+  color: var(--veyra-text);
+  background-color: var(--veyra-surface);
+  border: 1px solid var(--veyra-border);
   border-radius: 6px;
-  padding: 12px 14px;
+  padding: 10px 14px;
 }
 
 .chat-input:focus {
   outline: none;
-  border-color: var(--teal);
+  border-color: var(--veyra-accent);
 }
 
 .chat-input::placeholder {
-  color: var(--muted);
+  color: var(--veyra-muted);
 }
 
 .chat-send-button {
-  font-family: var(--font-body);
+  font-family: var(--veyra-font);
   font-weight: 600;
   font-size: 14px;
-  color: var(--bg);
-  background-color: var(--teal);
+  color: #ffffff;
+  background-color: var(--veyra-accent);
   border: none;
   border-radius: 6px;
-  padding: 12px 22px;
+  padding: 10px 20px;
   cursor: pointer;
 }
 
 .chat-send-button:disabled {
-  background-color: var(--muted);
+  background-color: var(--veyra-border);
+  color: var(--veyra-muted);
   cursor: default;
-}
-
-/* Transaction queue */
-
-.queue-title {
-  padding-bottom: 24px;
-  margin-bottom: 0;
-  border-bottom: 1px solid var(--line);
-}
-
-.queue-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  border-top: 1px solid var(--line);
-}
-
-.queue-list li {
-  border-bottom: 1px solid var(--line);
-}
-
-.queue-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-  padding: 20px 16px;
-  border-left: 3px solid transparent;
-  color: inherit;
-  text-decoration: none;
-}
-
-.queue-row-locked {
-  opacity: 0.45;
-  cursor: default;
-}
-
-.queue-row-active {
-  cursor: pointer;
-  border-left-color: var(--teal);
-}
-
-.queue-row-active:hover,
-.queue-row-completed:hover {
-  background-color: var(--bg);
-}
-
-.queue-row-completed {
-  cursor: pointer;
-}
-
-.queue-row-main {
-  flex: 1;
-  min-width: 0;
-}
-
-.queue-row-title {
-  font-family: var(--font-serif);
-  font-weight: 600;
-  font-size: 19px;
-  color: var(--text);
-  margin: 0 0 6px;
-}
-
-.queue-row-teaser {
-  font-size: 14px;
-  color: var(--muted);
-  margin: 0 0 8px;
-  line-height: 1.5;
-}
-
-.queue-row-difficulty {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-
-.lock-badge {
-  flex-shrink: 0;
-  font-family: var(--font-mono);
-  font-size: 12px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--muted);
 }

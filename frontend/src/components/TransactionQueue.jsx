@@ -1,43 +1,39 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { fetchLevels, ApiError } from '../api.js';
 import QueueHeader from './QueueHeader.jsx';
+import RiskBadge from './RiskBadge.jsx';
+import { placeholderCaseId } from '../caseIds.js';
 
 const PACK_ID = 'veyra-shield';
 
-function rowStateClass(level) {
-  if (!level.unlocked) return 'queue-row queue-row-locked';
-  if (level.completed) return 'queue-row queue-row-completed';
-  return 'queue-row queue-row-active';
+function statusFor(level) {
+  if (!level.unlocked) return 'Locked';
+  if (level.completed) return 'Closed';
+  return 'Open';
 }
 
-function QueueRow({ level }) {
-  const content = (
-    <>
-      <div className="queue-row-main">
-        <h3 className="queue-row-title">{level.title}</h3>
-        <p className="queue-row-teaser">{level.teaser}</p>
-        <span className="queue-row-difficulty">[ {level.difficulty} ]</span>
-      </div>
-
-      {!level.unlocked && <span className="lock-badge">[ LOCKED ]</span>}
-
-      {level.completed && (
-        <span className="stamp-badge">
-          [ <span className="stamp-word">Closed</span> ]
-        </span>
-      )}
-    </>
-  );
-
-  if (!level.unlocked) {
-    return <div className={rowStateClass(level)}>{content}</div>;
-  }
+function QueueTableRow({ level, index }) {
+  const navigate = useNavigate();
+  const clickable = level.unlocked;
 
   return (
-    <Link to={`/case/${level.id}`} className={rowStateClass(level)}>
-      {content}
-    </Link>
+    <tr
+      className={clickable ? 'queue-row-clickable' : 'queue-row-locked'}
+      onClick={clickable ? () => navigate(`/case/${level.id}`) : undefined}
+    >
+      <td className="cell-mono">{placeholderCaseId(index)}</td>
+      <td>
+        <div className="cell-title">{level.title}</div>
+        <div className="cell-subtext">{level.teaser}</div>
+      </td>
+      <td>
+        <RiskBadge difficulty={level.difficulty} />
+      </td>
+      <td className={`cell-status status-${statusFor(level).toLowerCase()}`}>
+        {statusFor(level)}
+      </td>
+    </tr>
   );
 }
 
@@ -68,7 +64,7 @@ function TransactionQueue() {
 
   return (
     <div className="review-panel">
-      <QueueHeader count={status === 'loaded' ? levels.length : undefined} />
+      <QueueHeader />
 
       {status === 'loading' && (
         <main className="case-body case-body-status">
@@ -84,14 +80,22 @@ function TransactionQueue() {
 
       {status === 'loaded' && (
         <main className="case-body">
-          <h1 className="level-title queue-title">Flagged Transactions</h1>
-          <ul className="queue-list">
-            {levels.map((level) => (
-              <li key={level.id}>
-                <QueueRow level={level} />
-              </li>
-            ))}
-          </ul>
+          <h1 className="page-title">Flagged Transactions</h1>
+          <table className="queue-table">
+            <thead>
+              <tr>
+                <th>Case ID</th>
+                <th>Title</th>
+                <th>Risk</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {levels.map((level, index) => (
+                <QueueTableRow key={level.id} level={level} index={index} />
+              ))}
+            </tbody>
+          </table>
         </main>
       )}
     </div>

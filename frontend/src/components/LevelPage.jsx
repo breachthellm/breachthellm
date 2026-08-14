@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { fetchLevel, ApiError } from '../api.js';
 import ChatPanel from './ChatPanel.jsx';
+import RiskBadge from './RiskBadge.jsx';
 
-function LevelPage({ packId, levelId }) {
+function LevelPage({ packId, levelId, caseId }) {
   const [status, setStatus] = useState('loading');
   const [level, setLevel] = useState(null);
   const [error, setError] = useState(null);
@@ -45,40 +46,45 @@ function LevelPage({ packId, levelId }) {
 
   return (
     <main className="case-body">
-      <div className="title-row">
-        <h1 className="level-title">{level.title}</h1>
-        <span className="stamp-badge">
-          [ <span className="stamp-word">{level.difficulty}</span> ]
-        </span>
+      <h1 className="page-title">{level.title}</h1>
+
+      <div className="meta-grid">
+        <div className="meta-field">
+          <span className="meta-label">Case ID</span>
+          <span className="meta-value cell-mono">{caseId}</span>
+        </div>
+        <div className="meta-field">
+          <span className="meta-label">Risk</span>
+          <RiskBadge difficulty={level.difficulty} />
+        </div>
+        <div className="meta-field">
+          <span className="meta-label">Status</span>
+          <span className="meta-value">{level.solved ? 'Closed' : 'Open'}</span>
+        </div>
       </div>
 
       <p className="level-teaser">{level.teaser}</p>
 
-      <section className="level-section">
-        <h2>Investigator&rsquo;s Brief</h2>
+      <section className="detail-section">
+        <h2>Objective</h2>
         <p>{level.objective}</p>
       </section>
 
-      <section className="level-section">
-        <h2>Attached Notes</h2>
-        <ul className="note-list">
+      <section className="detail-section">
+        <h2>Notes</h2>
+        <ul className="faq-list">
           {level.hints.map((hint, index) => (
             <li key={index}>
               <details>
-                <summary>
-                  <span className="note-marker" />
-                  <span className="note-label">
-                    Note {String(index + 1).padStart(2, '0')}
-                  </span>
-                </summary>
-                <p className="note-body">{hint}</p>
+                <summary>Note {index + 1}</summary>
+                <p>{hint}</p>
               </details>
             </li>
           ))}
         </ul>
       </section>
 
-      <section className="level-section">
+      <section className="detail-section">
         <h2>Chat with Veyra Shield</h2>
         <ChatPanel packId={packId} levelId={levelId} />
       </section>

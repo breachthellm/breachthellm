@@ -1,19 +1,12 @@
 import SystemMasthead from './SystemMasthead.jsx';
 
-// Hardcoded placeholder, not derived from real data, same treatment as the
-// old "LVL 1/7" counter. Will need real wiring once cases/levels are tracked.
-const CASE_ID = 'Case #VS-2026-0114';
-
-function CaseHeader() {
+function CaseHeader({ caseId }) {
   return (
     <div className="panel-header">
-      <SystemMasthead />
-      <div className="panel-meta">
-        <span className="case-id">{CASE_ID}</span>
-        <span className="panel-reviewer">
-          Assigned Reviewer: <span className="reviewer-value">YOU</span>
-        </span>
-      </div>
+      <SystemMasthead crumb={caseId} />
+      <span className="panel-reviewer">
+        Assigned Reviewer: <strong>YOU</strong>
+      </span>
     </div>
   );
 }

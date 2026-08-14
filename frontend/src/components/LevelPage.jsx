@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { fetchLevel, ApiError } from '../api.js';
 import ChatPanel from './ChatPanel.jsx';
 import RiskBadge from './RiskBadge.jsx';
+import FlagSubmit from './FlagSubmit.jsx';
 
 function LevelPage({ packId, levelId, caseId }) {
   const [status, setStatus] = useState('loading');
@@ -27,6 +28,12 @@ function LevelPage({ packId, levelId, caseId }) {
       cancelled = true;
     };
   }, [packId, levelId]);
+
+  function handleSolved() {
+    fetchLevel(packId, levelId)
+      .then((data) => setLevel(data))
+      .catch(() => {});
+  }
 
   if (status === 'loading') {
     return (
@@ -87,6 +94,21 @@ function LevelPage({ packId, levelId, caseId }) {
       <section className="detail-section">
         <h2>Chat with Veyra Shield</h2>
         <ChatPanel packId={packId} levelId={levelId} />
+      </section>
+
+      <section className="detail-section">
+        <h2>Flag Submission</h2>
+        {level.solved ? (
+          <div className="solved-summary">
+            <div className="meta-field">
+              <span className="meta-label">Flag</span>
+              <span className="meta-value cell-mono">{level.flag}</span>
+            </div>
+            <p className="level-teaser">{level.postSolveExplanation}</p>
+          </div>
+        ) : (
+          <FlagSubmit packId={packId} levelId={levelId} onSolved={handleSolved} />
+        )}
       </section>
     </main>
   );

@@ -508,3 +508,49 @@ body {
   color: var(--veyra-muted);
   cursor: default;
 }
+
+/* Flag submission */
+
+.flag-submit-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--veyra-muted);
+  margin-bottom: 8px;
+}
+
+.flag-submit-controls {
+  display: flex;
+  gap: 10px;
+}
+
+.flag-feedback {
+  margin: 10px 0 0;
+  font-size: 13px;
+}
+
+.flag-feedback-incorrect {
+  color: var(--veyra-warning);
+}
+
+.flag-feedback-correct {
+  color: var(--veyra-success);
+  font-weight: 600;
+}
+
+.solved-summary {
+  padding: 16px 20px;
+  background-color: rgba(22, 163, 74, 0.06);
+  border: 1px solid rgba(22, 163, 74, 0.3);
+  border-radius: 6px;
+}
+
+.solved-summary .meta-field {
+  margin-bottom: 12px;
+}
+
+.solved-summary .level-teaser {
+  margin: 0;
+}

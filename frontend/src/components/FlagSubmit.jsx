@@ -46,6 +46,7 @@ function FlagSubmit({ packId, levelId, onSolved }) {
         <input
           id="flag-input"
           type="text"
+          autoComplete="off"
           className="chat-input"
           placeholder="BTL{...}"
           value={flag}

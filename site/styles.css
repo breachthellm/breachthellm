@@ -2,8 +2,16 @@
   --bg: #f7f7f4;
   --text: #0b1220;
   --muted: #5b6472;
-  --accent: #2dd4bf;
+  --accent: #1f7a5c;
   --border: #e4e2da;
+
+  /* Dark panel tokens for the Context Trace mockup only. Deliberately not
+     reusing --accent: this mockup replicates the real game app's actual
+     Context Trace component, which is teal, independent of whatever this
+     site's own accent color is. */
+  --panel-bg: #0b1220;
+  --text-on-dark: #e8e6dc;
+  --trace-teal: #2dd4bf;
 
   --font-body: 'Public Sans', sans-serif;
   --font-mono: 'IBM Plex Mono', monospace;
@@ -24,6 +32,46 @@ a {
   color: inherit;
 }
 
+/* Container, a single reusable width/alignment system for every section,
+   modeled directly on Bootstrap 5's real container breakpoints */
+
+.container {
+  width: 100%;
+  margin: 0 auto;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+@media (min-width: 576px) {
+  .container {
+    max-width: 540px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 720px;
+  }
+}
+
+@media (min-width: 992px) {
+  .container {
+    max-width: 960px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1140px;
+  }
+}
+
+@media (min-width: 1400px) {
+  .container {
+    max-width: 1320px;
+  }
+}
+
 /* Nav */
 
 .site-nav {
@@ -31,9 +79,8 @@ a {
 }
 
 .nav-inner {
-  max-width: 1120px;
-  margin: 0 auto;
-  padding: 20px 24px;
+  padding-top: 20px;
+  padding-bottom: 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -82,9 +129,20 @@ a {
 }
 
 .hero-inner {
-  max-width: 1120px;
-  margin: 0 auto;
-  padding: 96px 24px;
+  padding-top: 96px;
+  padding-bottom: 96px;
+  display: flex;
+  align-items: center;
+  gap: 48px;
+}
+
+.hero-copy {
+  flex: 1;
+  min-width: 0;
+}
+
+.hero-visual {
+  flex-shrink: 0;
 }
 
 .hero-headline {
@@ -144,6 +202,126 @@ a {
   padding: 4px 10px;
 }
 
+/* Context Trace mockup, the game app's real dark/teal register, deliberately
+   breaking from the rest of this site's light institutional palette */
+
+.trace-mockup {
+  width: 380px;
+  max-width: 100%;
+  background-color: var(--panel-bg);
+  border: 1px solid rgba(45, 212, 191, 0.3);
+  border-radius: 8px;
+  box-shadow: 0 24px 60px rgba(11, 18, 32, 0.35);
+  overflow: hidden;
+}
+
+.trace-mockup-header {
+  padding: 14px 20px;
+  border-bottom: 1px solid rgba(45, 212, 191, 0.2);
+}
+
+.trace-mockup-title {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--trace-teal);
+}
+
+.trace-mockup-body {
+  padding: 20px;
+}
+
+.trace-mockup-segment {
+  margin-bottom: 20px;
+}
+
+.trace-mockup-segment:last-child {
+  margin-bottom: 0;
+}
+
+.trace-mockup-label {
+  margin: 0 0 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-on-dark);
+}
+
+.trace-mockup-segment-system .trace-mockup-label {
+  color: var(--muted);
+}
+
+.trace-mockup-segment-user .trace-mockup-label {
+  color: var(--trace-teal);
+}
+
+.trace-mockup-text {
+  margin: 0;
+  padding: 12px 14px;
+  background-color: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text-on-dark);
+}
+
+@keyframes trace-mockup-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.trace-mockup-header,
+.trace-mockup-segment {
+  animation: trace-mockup-reveal 0.5s ease-out both;
+}
+
+.trace-mockup-header {
+  animation-delay: 0.1s;
+}
+
+.trace-mockup-segment-system {
+  animation-delay: 0.3s;
+}
+
+.trace-mockup-segment-user {
+  animation-delay: 0.5s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trace-mockup-header,
+  .trace-mockup-segment {
+    animation: none;
+  }
+}
+
+@media (max-width: 860px) {
+  .hero-inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .hero-visual {
+    width: 100%;
+  }
+
+  .trace-mockup {
+    width: 100%;
+    max-width: 420px;
+  }
+}
+
 .button {
   display: inline-block;
   font-family: var(--font-body);
@@ -157,7 +335,7 @@ a {
 
 .button-primary {
   background-color: var(--accent);
-  color: var(--text);
+  color: #ffffff;
 }
 
 .button-secondary {
@@ -169,9 +347,8 @@ a {
 /* Challenges */
 
 .challenges-inner {
-  max-width: 1120px;
-  margin: 0 auto;
-  padding: 80px 24px;
+  padding-top: 80px;
+  padding-bottom: 80px;
 }
 
 .section-eyebrow {
@@ -278,7 +455,7 @@ a {
 
 .badge-live {
   background-color: var(--accent);
-  color: var(--text);
+  color: #ffffff;
 }
 
 .badge-upcoming {
@@ -287,8 +464,8 @@ a {
 }
 
 .badge-difficulty {
-  background-color: rgba(45, 212, 191, 0.14);
-  color: #0f7a6c;
+  background-color: rgba(31, 122, 92, 0.14);
+  color: var(--accent);
 }
 
 .badge-difficulty-muted {

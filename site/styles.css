@@ -13,6 +13,16 @@
   --text-on-dark: #e8e6dc;
   --trace-teal: #2dd4bf;
 
+  /* Footer, dark gradient chrome bookending the page, matching TopBar's role
+     in the game app. Scoped to the footer only, the rest of the site stays
+     on the light tokens above. */
+  --footer-text: var(--text-on-dark);
+  --footer-muted: #a6b3c2;
+  --footer-border: rgba(255, 255, 255, 0.14);
+  /* Lighter derivative of --accent: measured at 1.8-2.5:1 against this
+     gradient (fails badly), this lighter tint is for footer link hover only. */
+  --footer-accent: #63c9a0;
+
   --font-body: 'Public Sans', sans-serif;
   --font-mono: 'IBM Plex Mono', monospace;
 }
@@ -346,6 +356,10 @@ a {
 
 /* Challenges */
 
+.challenges {
+  border-bottom: 1px solid var(--border);
+}
+
 .challenges-inner {
   padding-top: 80px;
   padding-bottom: 80px;
@@ -476,5 +490,145 @@ a {
 @media (max-width: 860px) {
   .challenge-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+/* How It Works */
+
+.how-it-works {
+  border-bottom: 1px solid var(--border);
+}
+
+.how-it-works-inner {
+  padding-top: 80px;
+  padding-bottom: 80px;
+}
+
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+}
+
+.step-number {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+
+.step-title {
+  margin: 0 0 8px;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.step-description {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.step-code {
+  margin: 16px 0 0;
+  padding: 12px 16px;
+  background-color: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+.step-code code {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text);
+}
+
+@media (max-width: 860px) {
+  .steps-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+}
+
+/* Footer, dark gradient chrome closing out the page */
+
+.site-footer {
+  background: linear-gradient(135deg, #1e3348, #2a495b, #264355);
+  color: var(--footer-text);
+}
+
+.footer-inner {
+  padding-top: 64px;
+  padding-bottom: 32px;
+}
+
+.footer-columns {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 32px;
+}
+
+.site-footer .wordmark {
+  color: var(--footer-text);
+}
+
+.footer-description {
+  margin: 16px 0 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--footer-muted);
+  max-width: 320px;
+}
+
+.footer-heading {
+  margin: 0 0 16px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--footer-muted);
+}
+
+.footer-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer-links a {
+  font-size: 14px;
+  color: var(--footer-muted);
+  text-decoration: none;
+}
+
+.footer-links a:hover {
+  color: var(--footer-accent);
+}
+
+.footer-bottom {
+  margin-top: 48px;
+  padding-top: 24px;
+  border-top: 1px solid var(--footer-border);
+}
+
+.footer-copyright {
+  margin: 0;
+  font-size: 13px;
+  color: var(--footer-muted);
+}
+
+@media (max-width: 860px) {
+  .footer-columns {
+    grid-template-columns: 1fr;
+    gap: 32px;
   }
 }

@@ -2,7 +2,7 @@
   /* Breach The LLM brand tokens — used by TopBar and the Context Trace panel,
      the two places our own brand deliberately shows through */
   --bg: #0b1220;
-  --teal: #2dd4bf;
+  --accent: #1f7a5c;
   --muted: #5b6b85;
   --text-on-dark: #e8e6dc;
   --font-mono: 'IBM Plex Mono', monospace;
@@ -68,8 +68,8 @@ body {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background-color: var(--teal);
-  box-shadow: 0 0 12px var(--teal);
+  background-color: var(--accent);
+  box-shadow: 0 0 5px var(--accent), 0 0 16px var(--accent);
 }
 
 /* Review panel — Veyra Shield's own application surface */
@@ -582,7 +582,7 @@ body {
   font-family: var(--font-mono);
   font-size: 11px;
   letter-spacing: 0.02em;
-  color: var(--teal);
+  color: var(--accent);
   cursor: pointer;
 }
 
@@ -607,7 +607,7 @@ body {
   display: flex;
   flex-direction: column;
   background-color: var(--bg);
-  border: 1px solid rgba(45, 212, 191, 0.3);
+  border: 1px solid rgba(31, 122, 92, 0.3);
   border-radius: 8px;
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
   overflow: hidden;
@@ -619,7 +619,7 @@ body {
   justify-content: space-between;
   flex-shrink: 0;
   padding: 14px 20px;
-  border-bottom: 1px solid rgba(45, 212, 191, 0.2);
+  border-bottom: 1px solid rgba(31, 122, 92, 0.2);
 }
 
 .trace-modal-title {
@@ -628,7 +628,7 @@ body {
   font-size: 13px;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: var(--teal);
+  color: var(--accent);
 }
 
 .trace-close-button {
@@ -674,7 +674,7 @@ body {
 }
 
 .trace-segment-user .trace-segment-label {
-  color: var(--teal);
+  color: var(--accent);
 }
 
 .trace-segment-text {

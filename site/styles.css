@@ -513,3 +513,37 @@ a {
     gap: 32px;
   }
 }
+
+/* Scroll reveal, restrained: fade + slight upward slide, one-time per
+   element. JS adds .reveal only when it can also animate it, so without JS
+   (or with prefers-reduced-motion below) content just renders normally. */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 500ms ease-out, transform 500ms ease-out;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* Challenge card hover polish */
+
+.challenge-card {
+  transition: transform 200ms ease-out, box-shadow 200ms ease-out;
+}
+
+.challenge-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(11, 18, 32, 0.1);
+}

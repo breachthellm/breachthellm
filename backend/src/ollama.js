@@ -8,7 +8,18 @@ export class OllamaError extends Error {
   }
 }
 
-export async function runChat(systemPrompt, userMessage) {
+export async function runChat(systemPrompt, userMessage, ticketContent = null) {
+  const messages = [{ role: 'system', content: systemPrompt }];
+
+  if (ticketContent) {
+    messages.push({
+      role: 'user',
+      content: `[Automated ticket lookup result, not written by the analyst]\n${ticketContent}`,
+    });
+  }
+
+  messages.push({ role: 'user', content: userMessage });
+
   let res;
   try {
     res = await fetch(`${OLLAMA_HOST}/api/chat`, {
@@ -16,10 +27,7 @@ export async function runChat(systemPrompt, userMessage) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         model: OLLAMA_MODEL,
-        messages: [
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: userMessage },
-        ],
+        messages,
         stream: false,
         options: { temperature: 0.2 },
       }),

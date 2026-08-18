@@ -3,6 +3,7 @@ import { fetchLevel, ApiError } from '../api.js';
 import ChatPanel from './ChatPanel.jsx';
 import RiskBadge from './RiskBadge.jsx';
 import FlagSubmit from './FlagSubmit.jsx';
+import TicketSubmit from './TicketSubmit.jsx';
 
 function LevelPage({ packId, levelId, caseId }) {
   const [status, setStatus] = useState('loading');
@@ -30,6 +31,12 @@ function LevelPage({ packId, levelId, caseId }) {
   }, [packId, levelId]);
 
   function handleSolved() {
+    fetchLevel(packId, levelId)
+      .then((data) => setLevel(data))
+      .catch(() => {});
+  }
+
+  function handleTicketSubmitted() {
     fetchLevel(packId, levelId)
       .then((data) => setLevel(data))
       .catch(() => {});
@@ -90,6 +97,18 @@ function LevelPage({ packId, levelId, caseId }) {
           ))}
         </ul>
       </section>
+
+      {level.usesTicket && (
+        <section className="detail-section">
+          <h2>Submit Dispute Ticket</h2>
+          <TicketSubmit
+            packId={packId}
+            levelId={levelId}
+            ticketSubmitted={level.ticketSubmitted}
+            onSubmitted={handleTicketSubmitted}
+          />
+        </section>
+      )}
 
       <section className="detail-section">
         <h2>Chat with Veyra Shield</h2>

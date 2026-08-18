@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 
 const SOURCE_LABELS = {
   system: 'System Prompt',
+  ticket: 'Submitted Ticket',
   user: 'Your Message',
 };
 

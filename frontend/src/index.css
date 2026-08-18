@@ -677,6 +677,14 @@ body {
   color: var(--accent);
 }
 
+.trace-segment-ticket .trace-segment-label {
+  color: var(--text-on-dark);
+}
+
+.trace-segment-ticket .trace-segment-text {
+  border-style: dashed;
+}
+
 .trace-segment-text {
   margin: 0;
   padding: 12px 14px;

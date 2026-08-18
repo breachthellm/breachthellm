@@ -15,7 +15,10 @@ import {
   isLevelUnlocked,
   resetLevel,
   resetPack,
+  setTicketContent,
 } from '../progress.js';
+
+const TICKET_MAX_LENGTH = 2000;
 
 const router = Router();
 
@@ -79,7 +82,8 @@ router.get('/:packId/levels/:levelId', async (req, res) => {
     const level = await loadLevel(packId, levelId);
     const levelProgress = await getLevelProgress(packId, levelId);
     const solved = levelProgress?.completed ?? false;
-    res.json(toPublicLevelView(level, { solved }));
+    const ticketSubmitted = Boolean(levelProgress?.ticketContent);
+    res.json(toPublicLevelView(level, { solved, ticketSubmitted }));
   } catch (err) {
     if (err.statusCode) {
       return res.status(err.statusCode).json({ error: err.message });
@@ -106,12 +110,14 @@ router.post('/:packId/levels/:levelId/attempt', async (req, res) => {
         .json({ error: 'This level is locked. Complete the previous level first.' });
     }
 
+    const levelProgress = await getLevelProgress(packId, levelId);
+    const ticketContent = levelProgress?.ticketContent ?? null;
+
     const systemPrompt = buildSystemPrompt(level);
-    const response = await runChat(systemPrompt, message);
+    const response = await runChat(systemPrompt, message, ticketContent);
 
     await incrementAttempts(packId, levelId);
 
-    const levelProgress = await getLevelProgress(packId, levelId);
     const solved = levelProgress?.completed ?? false;
 
     res.json({
@@ -121,9 +127,45 @@ router.post('/:packId/levels/:levelId/attempt', async (req, res) => {
           source: 'system',
           text: solved ? systemPrompt : '[system prompt redacted until solved]',
         },
+        ...(ticketContent ? [{ source: 'ticket', text: ticketContent }] : []),
         { source: 'user', text: message },
       ],
     });
+  } catch (err) {
+    if (err.statusCode) {
+      return res.status(err.statusCode).json({ error: err.message });
+    }
+    console.error(err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+router.post('/:packId/levels/:levelId/ticket', async (req, res) => {
+  const { packId, levelId } = req.params;
+  const { content } = req.body ?? {};
+
+  if (typeof content !== 'string' || content.trim() === '') {
+    return res.status(400).json({ error: 'content is required' });
+  }
+
+  if (content.length > TICKET_MAX_LENGTH) {
+    return res
+      .status(400)
+      .json({ error: `content must be ${TICKET_MAX_LENGTH} characters or fewer` });
+  }
+
+  try {
+    await loadLevel(packId, levelId);
+
+    if (!(await isLevelUnlocked(packId, levelId))) {
+      return res
+        .status(403)
+        .json({ error: 'This level is locked. Complete the previous level first.' });
+    }
+
+    await setTicketContent(packId, levelId, content);
+    const levelProgress = await getLevelProgress(packId, levelId);
+    res.json(levelProgress);
   } catch (err) {
     if (err.statusCode) {
       return res.status(err.statusCode).json({ error: err.message });

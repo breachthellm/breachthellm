@@ -79,7 +79,7 @@ export function buildSystemPrompt(level) {
   );
 }
 
-export function toPublicLevelView(level, { solved }) {
+export function toPublicLevelView(level, { solved, ticketSubmitted = false }) {
   const {
     packId,
     flag,
@@ -92,6 +92,7 @@ export function toPublicLevelView(level, { solved }) {
   return {
     ...publicFields,
     solved,
+    ticketSubmitted,
     ...(solved
       ? {
           flag: computeFlag(packId, level.id),

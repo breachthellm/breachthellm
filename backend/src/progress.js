@@ -11,6 +11,7 @@ function emptyLevelState(unlocked) {
     attempts: 0,
     hintsUsed: 0,
     completedAt: null,
+    ticketContent: null,
   };
 }
 
@@ -83,6 +84,18 @@ export async function incrementAttempts(packId, levelId) {
   );
 }
 
+export async function setTicketContent(packId, levelId, content) {
+  await progressCollection().updateOne(
+    { installId: INSTALL_ID, packId },
+    {
+      $set: {
+        [`levels.${levelId}.ticketContent`]: content,
+        lastUpdated: new Date(),
+      },
+    }
+  );
+}
+
 export async function completeLevel(packId, levelId) {
   const pack = await loadPack(packId);
   const nextLevelId = pack.levelOrder[pack.levelOrder.indexOf(levelId) + 1];
@@ -112,6 +125,7 @@ export async function resetLevel(packId, levelId) {
         [`levels.${levelId}.attempts`]: 0,
         [`levels.${levelId}.hintsUsed`]: 0,
         [`levels.${levelId}.completedAt`]: null,
+        [`levels.${levelId}.ticketContent`]: null,
         lastUpdated: new Date(),
       },
     }

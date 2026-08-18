@@ -4,5 +4,5 @@
   "tagline": "Talk your way past the AI guarding the money.",
   "org": "Veyra",
   "description": "A fictional digital bank's AI fraud review assistant.",
-  "levelOrder": ["01-leak-the-rules", "02-override-the-verdict", "03-the-poisoned-dispute", "04-the-fake-vendor-page"]
+  "levelOrder": ["01-leak-the-rules", "02-override-the-verdict", "03-the-poisoned-dispute", "04-the-fake-vendor-page", "05-chain-to-the-wire"]
 }

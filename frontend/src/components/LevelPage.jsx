@@ -117,6 +117,7 @@ function LevelPage({ packId, levelId, caseId }) {
           levelId={levelId}
           solved={level.solved}
           systemPrompt={level.systemPrompt}
+          onSolved={handleSolved}
         />
       </section>
 

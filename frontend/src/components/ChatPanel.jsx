@@ -4,7 +4,7 @@ import TraceModal from './TraceModal.jsx';
 
 let nextMessageId = 1;
 
-function ChatPanel({ packId, levelId, solved, systemPrompt }) {
+function ChatPanel({ packId, levelId, solved, systemPrompt, onSolved }) {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [sending, setSending] = useState(false);
@@ -29,10 +29,16 @@ function ChatPanel({ packId, levelId, solved, systemPrompt }) {
 
     try {
       const data = await postAttempt(packId, levelId, trimmed);
+      const text = data.response.trim()
+        ? data.response
+        : '[Veyra Shield executed an action]';
       setMessages((prev) => [
         ...prev,
-        { id: nextMessageId++, role: 'assistant', text: data.response, trace: data.trace },
+        { id: nextMessageId++, role: 'assistant', text, trace: data.trace },
       ]);
+      if (data.solved) {
+        onSolved();
+      }
     } catch (err) {
       const text = err instanceof ApiError ? err.message : 'Something went wrong.';
       setMessages((prev) => [...prev, { id: nextMessageId++, role: 'error', text }]);

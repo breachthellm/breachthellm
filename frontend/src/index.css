@@ -685,6 +685,15 @@ body {
   border-style: dashed;
 }
 
+.trace-segment-action .trace-segment-label {
+  color: var(--text-on-dark);
+}
+
+.trace-segment-action .trace-segment-text {
+  border-width: 2px;
+  border-color: var(--accent);
+}
+
 .trace-segment-text {
   margin: 0;
   padding: 12px 14px;

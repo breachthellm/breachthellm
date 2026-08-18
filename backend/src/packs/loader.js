@@ -72,6 +72,23 @@ export async function loadLevel(packId, levelId) {
   return { ...level, packId, systemPrompt };
 }
 
+export function buildToolsForLevel(level) {
+  if (!level.tool) {
+    return null;
+  }
+
+  return [
+    {
+      type: 'function',
+      function: {
+        name: level.tool.name,
+        description: level.tool.description,
+        parameters: level.tool.parameters,
+      },
+    },
+  ];
+}
+
 export function buildSystemPrompt(level) {
   return level.systemPrompt.replaceAll(
     '{{FLAG}}',

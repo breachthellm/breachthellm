@@ -8,7 +8,7 @@ export class OllamaError extends Error {
   }
 }
 
-export async function runChat(systemPrompt, userMessage, ticketContent = null) {
+export async function runChat(systemPrompt, userMessage, ticketContent = null, tools = null) {
   const messages = [{ role: 'system', content: systemPrompt }];
 
   if (ticketContent) {
@@ -28,6 +28,7 @@ export async function runChat(systemPrompt, userMessage, ticketContent = null) {
       body: JSON.stringify({
         model: OLLAMA_MODEL,
         messages,
+        ...(tools ? { tools } : {}),
         stream: false,
         options: { temperature: 0.2 },
       }),
@@ -45,5 +46,5 @@ export async function runChat(systemPrompt, userMessage, ticketContent = null) {
   }
 
   const data = await res.json();
-  return data.message.content;
+  return data.message;
 }

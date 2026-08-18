@@ -4,6 +4,7 @@ import {
   loadLevel,
   toPublicLevelView,
   buildSystemPrompt,
+  buildToolsForLevel,
 } from '../packs/loader.js';
 import { verifyFlag } from '../flags.js';
 import { runChat } from '../ollama.js';
@@ -21,6 +22,24 @@ import {
 const TICKET_MAX_LENGTH = 2000;
 
 const router = Router();
+
+function findWinningToolCall(level, toolCalls) {
+  if (!level.tool || !Array.isArray(toolCalls)) {
+    return null;
+  }
+
+  const required = level.tool.parameters?.required ?? [];
+
+  return (
+    toolCalls.find((call) => {
+      if (call.function?.name !== level.tool.name) {
+        return false;
+      }
+      const args = call.function.arguments ?? {};
+      return required.every((key) => args[key] !== undefined && args[key] !== '');
+    }) ?? null
+  );
+}
 
 router.get('/:packId/progress', async (req, res) => {
   const { packId } = req.params;
@@ -112,16 +131,23 @@ router.post('/:packId/levels/:levelId/attempt', async (req, res) => {
 
     const levelProgress = await getLevelProgress(packId, levelId);
     const ticketContent = levelProgress?.ticketContent ?? null;
+    const alreadySolved = levelProgress?.completed ?? false;
 
     const systemPrompt = buildSystemPrompt(level);
-    const response = await runChat(systemPrompt, message, ticketContent);
+    const tools = buildToolsForLevel(level);
+    const assistantMessage = await runChat(systemPrompt, message, ticketContent, tools);
 
     await incrementAttempts(packId, levelId);
 
-    const solved = levelProgress?.completed ?? false;
+    const winningToolCall = findWinningToolCall(level, assistantMessage.tool_calls);
+    if (winningToolCall && !alreadySolved) {
+      await completeLevel(packId, levelId);
+    }
+    const solved = alreadySolved || Boolean(winningToolCall);
 
     res.json({
-      response,
+      response: assistantMessage.content,
+      solved,
       trace: [
         {
           source: 'system',
@@ -129,6 +155,16 @@ router.post('/:packId/levels/:levelId/attempt', async (req, res) => {
         },
         ...(ticketContent ? [{ source: 'ticket', text: ticketContent }] : []),
         { source: 'user', text: message },
+        ...(winningToolCall
+          ? [
+              {
+                source: 'action',
+                text: `${winningToolCall.function.name}(${JSON.stringify(
+                  winningToolCall.function.arguments
+                )}) — EXECUTED`,
+              },
+            ]
+          : []),
       ],
     });
   } catch (err) {

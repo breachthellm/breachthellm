@@ -4,6 +4,7 @@ const SOURCE_LABELS = {
   system: 'System Prompt',
   ticket: 'Submitted Ticket',
   user: 'Your Message',
+  action: 'Action Taken',
 };
 
 function labelFor(source) {

@@ -100,11 +100,12 @@ function LevelPage({ packId, levelId, caseId }) {
 
       {level.usesTicket && (
         <section className="detail-section">
-          <h2>Submit Dispute Ticket</h2>
+          <h2>{level.ticketLabel ?? 'Submit Dispute Ticket'}</h2>
           <TicketSubmit
             packId={packId}
             levelId={levelId}
             ticketSubmitted={level.ticketSubmitted}
+            ticketInputLabel={level.ticketInputLabel}
             onSubmitted={handleTicketSubmitted}
           />
         </section>

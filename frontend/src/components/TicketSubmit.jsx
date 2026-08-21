@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { postTicket, ApiError } from '../api.js';
 
-function TicketSubmit({ packId, levelId, ticketSubmitted, onSubmitted }) {
+function TicketSubmit({ packId, levelId, ticketSubmitted, ticketInputLabel, onSubmitted }) {
   const [content, setContent] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
@@ -31,7 +31,7 @@ function TicketSubmit({ packId, levelId, ticketSubmitted, onSubmitted }) {
   return (
     <form className="flag-submit-row" onSubmit={handleSubmit}>
       <label className="flag-submit-label" htmlFor="ticket-input">
-        Ticket details
+        {ticketInputLabel ?? 'Ticket details'}
       </label>
       <textarea
         id="ticket-input"

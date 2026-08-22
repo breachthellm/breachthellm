@@ -7,13 +7,15 @@ This is how Breach The LLM is put together, useful if you're contributing, curio
 The stack runs as a set of Docker Compose services:
 
 - **Frontend** — React app, the challenge dashboard and the Veyra Shield interface
-- **Backend** — Express/Node API, handles challenge logic, flag validation, and the AI backend switch
+- **Backend** — Express/Node API, handles challenge logic, flag validation, and requests to the local AI model
 - **MongoDB** — stores local progress (levels unlocked, completed, hints used) and nothing else
 - **Ollama** — the local model runtime, default AI backend, fully offline
 
-## AI backend: local vs API mode
+## AI backend: local, with API mode planned
 
-By default, the backend talks to a local model through Ollama. This keeps the whole platform offline and free to run. If you set API credentials in `.env`, the backend switches to calling OpenAI or Anthropic instead, useful if you want to see how a hardened production-grade model responds differently than a local one. The switch is a config value, not a code change, the rest of the platform behaves identically either way.
+The backend talks to a local model through Ollama. This is the only AI backend implemented today, and it's what keeps the whole platform offline and free to run.
+
+`docker-compose.yml` and `.env.example` already define `AI_BACKEND_MODE`, `OPENAI_API_KEY`, and `ANTHROPIC_API_KEY`. These are forward-looking placeholders for a planned API mode, calling OpenAI or Anthropic instead of the local model, useful for seeing how a hardened production-grade model responds differently than a local one. Setting them today has no effect: the backend only ever calls Ollama. API mode is planned for a future version.
 
 After the first `docker compose up`, the Ollama model needs to be pulled manually into the container before challenges will work:
 

@@ -31,8 +31,7 @@ v1 is the attack range, deliberately narrow and polished. It ships:
 - **7 hands-on challenges**, from beginner direct injection to an advanced chained capstone
 - **Context Trace view**, a color-coded breakdown of exactly what the AI read and trusted for any given response, so you can see the injection working, not just infer it
 - **Cinematic incident framing** and an attack surface map, so you're probing a world, not a chat box
-- **Runs fully offline** by default via a local model (Ollama), no API keys required
-- **Optional API mode** to test against a real frontier model (OpenAI or Anthropic)
+- **Runs fully offline** via a local model (Ollama), no API keys required
 - **Every challenge mapped** to OWASP LLM Top 10 and MITRE ATLAS
 - **Progressive hints** per level, plus a full local reset for a clean run
 - **One command to start**, no cloud account, no signup, no telemetry
@@ -59,7 +58,7 @@ Then open `http://localhost:3000` and start with Level 1.
 
 Using a lighter local model? Set `OLLAMA_MODEL=llama3.2:3b` in `.env`, note this is experimental, current challenges are calibrated against the larger model and smaller models may behave inconsistently.
 
-By default, Breach The LLM runs on a local model via Ollama, fully offline. To use a real API instead, copy `.env.example` to `.env` and add your OpenAI or Anthropic API key.
+Breach The LLM runs on a local model via Ollama, fully offline. Optional API mode (OpenAI or Anthropic instead of the local model) is planned for a future version, `.env.example` already lists the relevant variables as placeholders, but they have no effect yet.
 
 ## The Challenges
 
@@ -77,7 +76,7 @@ Full conceptual breakdowns of each vulnerability category live in [`/docs`](./do
 
 ## Tech Stack
 
-React, Express/Node, MongoDB, Docker Compose. AI backend is Ollama by default, with optional OpenAI/Anthropic API support.
+React, Express/Node, MongoDB, Docker Compose. AI backend is Ollama. OpenAI/Anthropic API support is planned for a future version.
 
 ## Where this is going
 
@@ -85,7 +84,7 @@ Breach The LLM is built in public and expands in phases. v1 is the hook. The res
 
 - **v1 — The Hook.** The 7-level attack range plus Context Trace. Available now / in progress.
 - **v2 — Defend and Measure.** Write your own system prompt and guardrails, then an automated adversary attacks and scores them. A skills scorecard shows which OWASP LLM and MITRE ATLAS categories you have demonstrated. A community defense ladder turns the best submitted defenses into the next challenge.
-- **v3 — The Frontier.** Multi-step agentic scenarios: tool-chaining, agent-to-agent handoffs, and MCP-style attacks, the frontier the industry itself calls unsolved. Plus multi-model comparison with Context Trace side by side.
+- **v3 — The Frontier.** Multi-step agentic scenarios: tool-chaining, agent-to-agent handoffs, and MCP-style attacks, the frontier the industry itself calls unsolved. Plus multi-model comparison with Context Trace side by side, including optional OpenAI/Anthropic API mode alongside the local model.
 - **v4 — Bring Your Own.** Point the full attack suite at your own system prompt or local endpoint, safely. Team mode with shared leaderboards and internal org events.
 
 The free, open source, self-hosted, offline-capable core stays constant across every phase.

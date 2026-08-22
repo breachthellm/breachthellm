@@ -4,12 +4,15 @@ import TraceModal from './TraceModal.jsx';
 
 let nextMessageId = 1;
 
+const MAX_TEXTAREA_HEIGHT = 120;
+
 function ChatPanel({ packId, levelId, solved, systemPrompt, onSolved }) {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [sending, setSending] = useState(false);
   const [viewingTraceId, setViewingTraceId] = useState(null);
   const listRef = useRef(null);
+  const textareaRef = useRef(null);
 
   useEffect(() => {
     const list = listRef.current;
@@ -18,8 +21,16 @@ function ChatPanel({ packId, levelId, solved, systemPrompt, onSolved }) {
     }
   }, [messages, sending]);
 
-  async function handleSubmit(event) {
-    event.preventDefault();
+  function resizeTextarea() {
+    const el = textareaRef.current;
+    if (!el) return;
+    el.style.height = 'auto';
+    el.style.height = `${Math.min(el.scrollHeight, MAX_TEXTAREA_HEIGHT)}px`;
+  }
+
+  useEffect(resizeTextarea, [input]);
+
+  async function submitMessage() {
     const trimmed = input.trim();
     if (!trimmed || sending) return;
 
@@ -44,6 +55,18 @@ function ChatPanel({ packId, levelId, solved, systemPrompt, onSolved }) {
       setMessages((prev) => [...prev, { id: nextMessageId++, role: 'error', text }]);
     } finally {
       setSending(false);
+    }
+  }
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    submitMessage();
+  }
+
+  function handleKeyDown(event) {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
+      submitMessage();
     }
   }
 
@@ -108,12 +131,14 @@ function ChatPanel({ packId, levelId, solved, systemPrompt, onSolved }) {
       </div>
 
       <form className="chat-input-row" onSubmit={handleSubmit}>
-        <input
-          type="text"
-          className="chat-input"
+        <textarea
+          ref={textareaRef}
+          rows={2}
+          className="chat-input chat-input-textarea"
           placeholder="Type a message to Veyra Shield..."
           value={input}
           onChange={(event) => setInput(event.target.value)}
+          onKeyDown={handleKeyDown}
           disabled={sending}
         />
         <button

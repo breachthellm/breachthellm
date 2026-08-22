@@ -485,6 +485,7 @@ body {
 
 .chat-input-row {
   display: flex;
+  align-items: flex-end;
   gap: 10px;
 }
 
@@ -497,6 +498,13 @@ body {
   border: 1px solid var(--veyra-border);
   border-radius: 6px;
   padding: 10px 14px;
+}
+
+.chat-input-textarea {
+  resize: none;
+  overflow-y: auto;
+  max-height: 120px;
+  line-height: 1.4;
 }
 
 .chat-input:focus {
@@ -570,6 +578,68 @@ body {
 
 .solved-summary .level-teaser {
   margin: 0;
+}
+
+/* Reset control */
+
+.reset-level-button {
+  align-self: flex-start;
+  font-family: var(--veyra-font);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--veyra-danger);
+  background-color: transparent;
+  border: 1px solid var(--veyra-danger);
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+.reset-level-confirm {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.reset-level-confirm-text {
+  margin: 0;
+  font-size: 13px;
+  color: var(--veyra-text);
+}
+
+.reset-level-confirm-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.reset-level-button-cancel {
+  font-family: var(--veyra-font);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--veyra-muted);
+  background-color: transparent;
+  border: 1px solid var(--veyra-border);
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+.reset-level-button-confirm {
+  font-family: var(--veyra-font);
+  font-size: 13px;
+  font-weight: 600;
+  color: #ffffff;
+  background-color: var(--veyra-danger);
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+.reset-level-button-cancel:disabled,
+.reset-level-button-confirm:disabled {
+  opacity: 0.6;
+  cursor: default;
 }
 
 /* Context Trace — our brand, deliberately breaking from Veyra's register */

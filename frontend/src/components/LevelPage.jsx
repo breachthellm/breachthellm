@@ -4,11 +4,13 @@ import ChatPanel from './ChatPanel.jsx';
 import RiskBadge from './RiskBadge.jsx';
 import FlagSubmit from './FlagSubmit.jsx';
 import TicketSubmit from './TicketSubmit.jsx';
+import ResetLevel from './ResetLevel.jsx';
 
 function LevelPage({ packId, levelId, caseId }) {
   const [status, setStatus] = useState('loading');
   const [level, setLevel] = useState(null);
   const [error, setError] = useState(null);
+  const [resetCount, setResetCount] = useState(0);
 
   useEffect(() => {
     let cancelled = false;
@@ -40,6 +42,13 @@ function LevelPage({ packId, levelId, caseId }) {
     fetchLevel(packId, levelId)
       .then((data) => setLevel(data))
       .catch(() => {});
+  }
+
+  function handleReset() {
+    fetchLevel(packId, levelId)
+      .then((data) => setLevel(data))
+      .catch(() => {});
+    setResetCount((count) => count + 1);
   }
 
   if (status === 'loading') {
@@ -75,6 +84,12 @@ function LevelPage({ packId, levelId, caseId }) {
           <span className="meta-label">Status</span>
           <span className="meta-value">{level.solved ? 'Closed' : 'Open'}</span>
         </div>
+        {level.solved && (
+          <div className="meta-field">
+            <span className="meta-label">Reset</span>
+            <ResetLevel packId={packId} levelId={levelId} onReset={handleReset} />
+          </div>
+        )}
       </div>
 
       <p className="level-teaser">{level.teaser}</p>
@@ -114,6 +129,7 @@ function LevelPage({ packId, levelId, caseId }) {
       <section className="detail-section">
         <h2>Chat with Veyra Shield</h2>
         <ChatPanel
+          key={resetCount}
           packId={packId}
           levelId={levelId}
           solved={level.solved}

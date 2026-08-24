@@ -2,9 +2,18 @@
   /* Breach The LLM brand tokens — used by TopBar and the Context Trace panel,
      the two places our own brand deliberately shows through */
   --bg: #0b1220;
+  --dark-gradient: linear-gradient(135deg, #1e3348, #2a495b, #264355);
   --accent: #1f7a5c;
   --muted: #5b6b85;
   --text-on-dark: #e8e6dc;
+  /* Lighter variants of --accent/--muted, verified against the darkest
+     stop of --dark-gradient (#2a495b), for any text, icon, or border
+     color that actually renders on top of the gradient. Same values as
+     site/styles.css's --dark-accent/--dark-muted, one canonical answer
+     to "what does accent/muted look like on this gradient" shared by
+     both the app and the marketing site. */
+  --dark-muted: #b2bdca;
+  --dark-accent: #63c9a0;
   --font-mono: 'IBM Plex Mono', monospace;
 
   /* Veyra Shield's surfaces — an unrelated, deliberately ordinary enterprise app */
@@ -29,7 +38,7 @@
 body {
   margin: 0;
   font-family: var(--veyra-font);
-  background-color: var(--bg);
+  background: var(--dark-gradient);
   color: var(--veyra-text);
 }
 
@@ -39,28 +48,28 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: var(--bg);
+  background: var(--dark-gradient);
 }
 
 .platform-strip {
   display: flex;
   align-items: center;
-  height: 32px;
+  height: 60px;
   padding: 0 20px;
-  background-color: var(--bg);
+  background: var(--dark-gradient);
   flex-shrink: 0;
 }
 
 .wordmark {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 16px;
   width: fit-content;
   font-family: var(--font-mono);
   font-weight: 700;
-  font-size: 13px;
+  font-size: 21px;
   letter-spacing: 0.02em;
-  color: var(--muted);
+  color: var(--dark-muted);
   text-decoration: none;
 }
 
@@ -70,6 +79,11 @@ body {
   border-radius: 50%;
   background-color: var(--accent);
   box-shadow: 0 0 5px var(--accent), 0 0 16px var(--accent);
+}
+
+.wordmark-mark {
+  width: 30px;
+  height: 30px;
 }
 
 /* Review panel — Veyra Shield's own application surface */
@@ -738,7 +752,7 @@ body {
   max-height: 80vh;
   display: flex;
   flex-direction: column;
-  background-color: var(--bg);
+  background: var(--dark-gradient);
   border: 1px solid rgba(31, 122, 92, 0.3);
   border-radius: 8px;
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
@@ -760,13 +774,13 @@ body {
   font-size: 13px;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--dark-accent);
 }
 
 .trace-close-button {
   background: none;
   border: none;
-  color: var(--muted);
+  color: var(--dark-muted);
   font-size: 20px;
   line-height: 1;
   cursor: pointer;
@@ -802,11 +816,11 @@ body {
 }
 
 .trace-segment-system .trace-segment-label {
-  color: var(--muted);
+  color: var(--dark-muted);
 }
 
 .trace-segment-user .trace-segment-label {
-  color: var(--accent);
+  color: var(--dark-accent);
 }
 
 .trace-segment-ticket .trace-segment-label {
@@ -823,7 +837,7 @@ body {
 
 .trace-segment-action .trace-segment-text {
   border-width: 2px;
-  border-color: var(--accent);
+  border-color: var(--dark-accent);
 }
 
 .trace-segment-text {

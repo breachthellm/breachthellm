@@ -4,7 +4,7 @@ function TopBar() {
   return (
     <header className="platform-strip">
       <Link to="/" className="wordmark">
-        <span className="wordmark-dot" />
+        <img src="/logo.svg" alt="" className="wordmark-mark" />
         BREACH_THE_LLM
       </Link>
     </header>

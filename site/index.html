@@ -3,7 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Breach The LLM</title>
+    <title>Breach The LLM: Open Source AI Prompt Injection Range | Arnold Mavhezha</title>
+    <meta name="description" content="Breach The LLM is an open source, self-hosted AI security range by Arnold Mavhezha. Practice real prompt injection attacks across 7 hands-on levels, mapped to the OWASP LLM Top 10 and MITRE ATLAS frameworks." />
+    <link rel="canonical" href="https://breachthellm.com/" />
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -12,6 +14,56 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styles.css" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Breach The LLM" />
+    <meta property="og:title" content="Breach The LLM: Open Source AI Prompt Injection Range" />
+    <meta property="og:description" content="An open source, self-hosted AI security range by Arnold Mavhezha. Practice real prompt injection attacks across 7 hands-on levels, mapped to OWASP LLM Top 10 and MITRE ATLAS." />
+    <meta property="og:url" content="https://breachthellm.com/" />
+    <!-- TODO: og:image needs a purpose-built 1200x630 social preview PNG, none exists yet -->
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Breach The LLM: Open Source AI Prompt Injection Range" />
+    <meta name="twitter:description" content="An open source, self-hosted AI security range by Arnold Mavhezha. Practice real prompt injection attacks across 7 hands-on levels, mapped to OWASP LLM Top 10 and MITRE ATLAS." />
+    <!-- TODO: twitter:image needs the same social preview PNG as og:image above -->
+
+    <!-- JSON-LD: SoftwareApplication + Person (Arnold Mavhezha), linked via @id -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "SoftwareApplication",
+          "@id": "https://breachthellm.com/#software",
+          "name": "Breach The LLM",
+          "description": "An open source, self-hosted AI security range for practicing prompt injection attacks against a simulated AI fraud-review assistant, across 7 hands-on levels mapped to the OWASP LLM Top 10 and MITRE ATLAS frameworks.",
+          "applicationCategory": "SecurityApplication",
+          "url": "https://breachthellm.com/",
+          "sameAs": ["https://github.com/breachthellm/breachthellm"],
+          "license": "https://opensource.org/licenses/MIT",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          },
+          "author": { "@id": "https://breachthellm.com/#person" },
+          "creator": { "@id": "https://breachthellm.com/#person" }
+        },
+        {
+          "@type": "Person",
+          "@id": "https://breachthellm.com/#person",
+          "name": "Arnold Mavhezha",
+          "sameAs": [
+            "https://github.com/mavhezha",
+            "https://www.linkedin.com/in/arnold-mavhezha/",
+            "https://mavhezha.com"
+          ]
+        }
+      ]
+    }
+    </script>
   </head>
   <body>
     <header class="site-nav">

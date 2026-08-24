@@ -534,10 +534,10 @@ a {
   margin: 0 0 16px;
   font-family: var(--font-mono);
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 900;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: var(--dark-muted);
+  color: var(--dark-text);
 }
 
 .footer-links {

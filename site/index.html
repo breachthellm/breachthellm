@@ -20,7 +20,18 @@
           <img src="assets/logo.svg" alt="" class="wordmark-mark" />
           BREACH_THE_LLM
         </a>
-        <nav class="nav-links" aria-label="Primary">
+        <button
+          type="button"
+          class="nav-toggle"
+          aria-expanded="false"
+          aria-controls="nav-links"
+          aria-label="Open menu"
+        >
+          <svg class="nav-toggle-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M4 7h16M4 12h16M4 17h16" />
+          </svg>
+        </button>
+        <nav class="nav-links" id="nav-links" aria-label="Primary">
           <a href="#challenges">Challenges</a>
           <a
             href="https://github.com/breachthellm/breachthellm/tree/main/docs"
@@ -53,7 +64,7 @@
               href="https://github.com/breachthellm/breachthellm"
               class="button button-secondary"
             >
-              View on GitHub
+              Star on GitHub
             </a>
           </div>
 

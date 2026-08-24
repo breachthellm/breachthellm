@@ -77,9 +77,16 @@ a {
   }
 }
 
+@media (min-width: 1800px) {
+  .container {
+    max-width: 1600px;
+  }
+}
+
 /* Nav */
 
 .site-nav {
+  position: relative;
   border-bottom: 1px solid var(--border);
 }
 
@@ -131,6 +138,51 @@ a {
 
 .nav-links a:hover {
   color: var(--text);
+}
+
+.nav-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  color: var(--text);
+}
+
+.nav-toggle-icon {
+  width: 24px;
+  height: 24px;
+  stroke: currentColor;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@media (max-width: 767px) {
+  .nav-toggle {
+    display: inline-flex;
+  }
+
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 20px 24px 28px;
+    background-color: var(--bg);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-links.is-open {
+    display: flex;
+  }
 }
 
 /* Hero */
@@ -283,6 +335,8 @@ a {
   border-radius: 8px;
   box-shadow: 0 1px 3px rgba(11, 18, 32, 0.06);
   padding: 24px;
+  display: flex;
+  flex-direction: column;
 }
 
 .challenge-card-upcoming {
@@ -344,6 +398,7 @@ a {
   font-size: 16px;
   line-height: 1.6;
   color: var(--muted);
+  flex: 1;
 }
 
 .badge {
@@ -368,6 +423,8 @@ a {
 .badge-difficulty {
   background-color: rgba(31, 122, 92, 0.14);
   color: var(--accent);
+  margin-top: auto;
+  align-self: flex-start;
 }
 
 .badge-difficulty-muted {

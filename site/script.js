@@ -37,3 +37,44 @@
     });
   }
 })();
+
+(function () {
+  var toggle = document.querySelector('.nav-toggle');
+  var navLinks = document.querySelector('.nav-links');
+  if (!toggle || !navLinks) return;
+
+  function isOpen() {
+    return navLinks.classList.contains('is-open');
+  }
+
+  function openMenu() {
+    navLinks.classList.add('is-open');
+    toggle.setAttribute('aria-expanded', 'true');
+    toggle.setAttribute('aria-label', 'Close menu');
+  }
+
+  function closeMenu() {
+    navLinks.classList.remove('is-open');
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.setAttribute('aria-label', 'Open menu');
+  }
+
+  toggle.addEventListener('click', function () {
+    if (isOpen()) {
+      closeMenu();
+    } else {
+      openMenu();
+    }
+  });
+
+  navLinks.querySelectorAll('a').forEach(function (link) {
+    link.addEventListener('click', closeMenu);
+  });
+
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape' && isOpen()) {
+      closeMenu();
+      toggle.focus();
+    }
+  });
+})();

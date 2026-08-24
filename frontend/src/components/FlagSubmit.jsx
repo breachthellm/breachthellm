@@ -65,6 +65,11 @@ function FlagSubmit({ packId, levelId, onSolved }) {
         </button>
       </div>
 
+      <p className="flag-submit-hint">
+        Flags contain only letters a-f and numbers 0-9. Local models can occasionally
+        introduce small typos when reproducing text.
+      </p>
+
       {result === 'incorrect' && (
         <p className="flag-feedback flag-feedback-incorrect">Incorrect, try again.</p>
       )}

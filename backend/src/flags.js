@@ -24,9 +24,20 @@ export function computeFlag(packId, levelId) {
   return `${FLAG_PREFIX}{${hash}}`;
 }
 
+function sanitizeFlagInput(input) {
+  // A real flag only ever contains "BTL{", lowercase hex, and "}". Model
+  // transcription noise (a stray slash, asterisk, or case slip from
+  // reproducing text) can't accidentally turn a wrong flag into a right
+  // one here, this only strips/folds, it never substitutes in a
+  // different valid character.
+  return String(input ?? '')
+    .toLowerCase()
+    .replace(/[^btl{}0-9a-f]/g, '');
+}
+
 export function verifyFlag(packId, levelId, submitted) {
-  const expected = Buffer.from(computeFlag(packId, levelId));
-  const actual = Buffer.from(String(submitted ?? ''));
+  const expected = Buffer.from(sanitizeFlagInput(computeFlag(packId, levelId)));
+  const actual = Buffer.from(sanitizeFlagInput(submitted));
   if (expected.length !== actual.length) {
     return false;
   }

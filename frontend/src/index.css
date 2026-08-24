@@ -648,6 +648,12 @@ body {
   gap: 10px;
 }
 
+.flag-submit-hint {
+  margin: 10px 0 0;
+  font-size: 13px;
+  color: var(--veyra-muted);
+}
+
 .flag-feedback {
   margin: 10px 0 0;
   font-size: 13px;

@@ -355,13 +355,34 @@ body {
   font-weight: 500;
 }
 
-.status-open {
-  color: var(--veyra-text);
+.status-badge {
+  display: inline-block;
+  font-size: 12px;
   font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 4px;
 }
 
-.status-closed,
-.status-locked {
+.status-badge-open {
+  color: var(--veyra-accent);
+  background-color: rgba(37, 99, 235, 0.12);
+}
+
+.status-badge-closed {
+  color: var(--veyra-muted);
+  background-color: var(--veyra-border);
+}
+
+.status-badge-locked {
+  color: var(--veyra-muted);
+  background-color: transparent;
+  border: 1px solid var(--veyra-border);
+  padding: 2px 9px;
+}
+
+.queue-summary {
+  margin: 0 0 16px;
+  font-size: 13px;
   color: var(--veyra-muted);
 }
 

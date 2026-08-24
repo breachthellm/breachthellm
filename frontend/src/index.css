@@ -351,6 +351,68 @@ body {
   color: var(--veyra-muted);
 }
 
+/* Below this width the 4-column table no longer fits without overflowing,
+   so each row becomes a stacked card instead. Same markup, same classes,
+   just a different display mode, RiskBadge and the status color rules
+   above are untouched and carry over automatically. */
+@media (max-width: 860px) {
+  .queue-table,
+  .queue-table tbody,
+  .queue-table tr,
+  .queue-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .queue-table thead {
+    display: none;
+  }
+
+  .queue-table tr {
+    border: 1px solid var(--veyra-border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+  }
+
+  .queue-table tr:last-child {
+    margin-bottom: 0;
+  }
+
+  .queue-table td {
+    padding: 0;
+    border-bottom: none;
+  }
+
+  .queue-table td + td {
+    margin-top: 10px;
+  }
+
+  .queue-table .cell-mono::before,
+  .queue-table td:nth-child(3)::before,
+  .queue-table .cell-status::before {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--veyra-muted);
+    margin-bottom: 4px;
+  }
+
+  .queue-table .cell-mono::before {
+    content: "Case ID";
+  }
+
+  .queue-table td:nth-child(3)::before {
+    content: "Risk";
+  }
+
+  .queue-table .cell-status::before {
+    content: "Status";
+  }
+}
+
 /* Chat */
 
 .chat-panel {

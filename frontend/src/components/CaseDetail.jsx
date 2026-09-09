@@ -2,19 +2,18 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import CaseHeader from './CaseHeader.jsx';
 import LevelPage from './LevelPage.jsx';
-import { fetchLevels } from '../api.js';
+import { fetchLevels, fetchPacks } from '../api.js';
 import { placeholderCaseId } from '../caseIds.js';
 
-const PACK_ID = 'veyra-shield';
-
 function CaseDetail() {
-  const { levelId } = useParams();
+  const { packId, levelId } = useParams();
   const [caseId, setCaseId] = useState(null);
+  const [packName, setPackName] = useState(null);
 
   useEffect(() => {
     let cancelled = false;
 
-    fetchLevels(PACK_ID)
+    fetchLevels(packId)
       .then((levels) => {
         if (cancelled) return;
         const index = levels.findIndex((l) => l.id === levelId);
@@ -24,15 +23,22 @@ function CaseDetail() {
       })
       .catch(() => {});
 
+    fetchPacks()
+      .then((packs) => {
+        if (cancelled) return;
+        setPackName(packs.find((pack) => pack.id === packId)?.name ?? null);
+      })
+      .catch(() => {});
+
     return () => {
       cancelled = true;
     };
-  }, [levelId]);
+  }, [packId, levelId]);
 
   return (
     <div className="review-panel">
-      <CaseHeader caseId={caseId} />
-      <LevelPage packId={PACK_ID} levelId={levelId} caseId={caseId} />
+      <CaseHeader caseId={caseId} packName={packName} />
+      <LevelPage packId={packId} levelId={levelId} caseId={caseId} packName={packName} />
     </div>
   );
 }

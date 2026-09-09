@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import {
+  listPackIds,
   loadPack,
   loadLevel,
   toPublicLevelView,
@@ -22,6 +23,25 @@ import {
 const TICKET_MAX_LENGTH = 2000;
 
 const router = Router();
+
+router.get('/', async (req, res) => {
+  try {
+    const packIds = await listPackIds();
+    const packs = await Promise.all(packIds.map((id) => loadPack(id)));
+    res.json(
+      packs.map(({ id, name, tagline, org, description }) => ({
+        id,
+        name,
+        tagline,
+        org,
+        description,
+      }))
+    );
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
 
 function findWinningToolCall(level, toolCalls) {
   if (!level.tool || !Array.isArray(toolCalls)) {

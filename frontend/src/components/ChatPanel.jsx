@@ -6,7 +6,7 @@ let nextMessageId = 1;
 
 const MAX_TEXTAREA_HEIGHT = 120;
 
-function ChatPanel({ packId, levelId, solved, systemPrompt, onSolved }) {
+function ChatPanel({ packId, levelId, solved, systemPrompt, onSolved, packName }) {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [sending, setSending] = useState(false);
@@ -42,7 +42,7 @@ function ChatPanel({ packId, levelId, solved, systemPrompt, onSolved }) {
       const data = await postAttempt(packId, levelId, trimmed);
       const text = data.response.trim()
         ? data.response
-        : '[Veyra Shield executed an action]';
+        : `[${packName} executed an action]`;
       setMessages((prev) => [
         ...prev,
         { id: nextMessageId++, role: 'assistant', text, trace: data.trace },
@@ -100,7 +100,7 @@ function ChatPanel({ packId, levelId, solved, systemPrompt, onSolved }) {
               }
             >
               <div className={isUser ? 'chat-message chat-message-user' : 'chat-message chat-message-assistant'}>
-                {!isUser && <p className="chat-message-label">Veyra Shield</p>}
+                {!isUser && <p className="chat-message-label">{packName}</p>}
                 <p className="chat-message-text">{message.text}</p>
               </div>
 
@@ -123,7 +123,7 @@ function ChatPanel({ packId, levelId, solved, systemPrompt, onSolved }) {
             <span className="chat-typing-dot" />
             <span className="chat-typing-dot" />
             <span className="chat-typing-caption">
-              Veyra Shield is reviewing your message, this can take a few seconds on a
+              {packName} is reviewing your message, this can take a few seconds on a
               local model.
             </span>
           </div>
@@ -135,7 +135,7 @@ function ChatPanel({ packId, levelId, solved, systemPrompt, onSolved }) {
           ref={textareaRef}
           rows={2}
           className="chat-input chat-input-textarea"
-          placeholder="Type a message to Veyra Shield..."
+          placeholder={`Type a message to ${packName}...`}
           value={input}
           onChange={(event) => setInput(event.target.value)}
           onKeyDown={handleKeyDown}

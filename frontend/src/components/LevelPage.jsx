@@ -6,7 +6,7 @@ import FlagSubmit from './FlagSubmit.jsx';
 import TicketSubmit from './TicketSubmit.jsx';
 import ResetLevel from './ResetLevel.jsx';
 
-function LevelPage({ packId, levelId, caseId }) {
+function LevelPage({ packId, levelId, caseId, packName }) {
   const [status, setStatus] = useState('loading');
   const [level, setLevel] = useState(null);
   const [error, setError] = useState(null);
@@ -127,7 +127,7 @@ function LevelPage({ packId, levelId, caseId }) {
       )}
 
       <section className="detail-section">
-        <h2>Chat with Veyra Shield</h2>
+        <h2>Chat with {packName}</h2>
         <ChatPanel
           key={resetCount}
           packId={packId}
@@ -135,6 +135,7 @@ function LevelPage({ packId, levelId, caseId }) {
           solved={level.solved}
           systemPrompt={level.systemPrompt}
           onSolved={handleSolved}
+          packName={packName}
         />
       </section>
 

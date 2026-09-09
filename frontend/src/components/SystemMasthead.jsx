@@ -1,7 +1,7 @@
-function SystemMasthead({ crumb }) {
+function SystemMasthead({ crumb, packName }) {
   return (
     <div className="app-breadcrumb">
-      <span className="app-name">Veyra Shield</span>
+      <span className="app-name">{packName}</span>
       {crumb && (
         <>
           <span className="breadcrumb-sep">/</span>

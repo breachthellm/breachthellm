@@ -1,11 +1,9 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { fetchLevels, ApiError } from '../api.js';
+import { useNavigate, useParams } from 'react-router-dom';
+import { fetchLevels, fetchPacks, ApiError } from '../api.js';
 import QueueHeader from './QueueHeader.jsx';
 import RiskBadge from './RiskBadge.jsx';
 import { placeholderCaseId } from '../caseIds.js';
-
-const PACK_ID = 'veyra-shield';
 
 function statusFor(level) {
   if (!level.unlocked) return 'Locked';
@@ -22,14 +20,14 @@ function summarize(levels) {
   return `${levels.length} cases · ${counts.Closed} closed · ${counts.Open} open · ${counts.Locked} locked`;
 }
 
-function QueueTableRow({ level, index }) {
+function QueueTableRow({ level, index, packId }) {
   const navigate = useNavigate();
   const clickable = level.unlocked;
 
   return (
     <tr
       className={clickable ? 'queue-row-clickable' : 'queue-row-locked'}
-      onClick={clickable ? () => navigate(`/case/${level.id}`) : undefined}
+      onClick={clickable ? () => navigate(`/pack/${packId}/case/${level.id}`) : undefined}
     >
       <td className="cell-mono">{placeholderCaseId(index)}</td>
       <td>
@@ -49,14 +47,16 @@ function QueueTableRow({ level, index }) {
 }
 
 function TransactionQueue() {
+  const { packId } = useParams();
   const [status, setStatus] = useState('loading');
   const [levels, setLevels] = useState([]);
   const [error, setError] = useState(null);
+  const [packName, setPackName] = useState(null);
 
   useEffect(() => {
     let cancelled = false;
 
-    fetchLevels(PACK_ID)
+    fetchLevels(packId)
       .then((data) => {
         if (cancelled) return;
         setLevels(data);
@@ -68,14 +68,21 @@ function TransactionQueue() {
         setStatus('error');
       });
 
+    fetchPacks()
+      .then((packs) => {
+        if (cancelled) return;
+        setPackName(packs.find((pack) => pack.id === packId)?.name ?? null);
+      })
+      .catch(() => {});
+
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [packId]);
 
   return (
     <div className="review-panel">
-      <QueueHeader />
+      <QueueHeader packName={packName} />
 
       {status === 'loading' && (
         <main className="case-body case-body-status">
@@ -104,7 +111,7 @@ function TransactionQueue() {
             </thead>
             <tbody>
               {levels.map((level, index) => (
-                <QueueTableRow key={level.id} level={level} index={index} />
+                <QueueTableRow key={level.id} level={level} index={index} packId={packId} />
               ))}
             </tbody>
           </table>

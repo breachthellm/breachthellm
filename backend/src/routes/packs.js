@@ -21,6 +21,8 @@ import {
 } from '../progress.js';
 
 const TICKET_MAX_LENGTH = 2000;
+const DEFENSE_PROMPT_MAX_LENGTH = 4000;
+const DEFENSE_TRIALS_PER_MESSAGE = 3;
 
 const router = Router();
 
@@ -59,6 +61,23 @@ function findWinningToolCall(level, toolCalls) {
       return required.every((key) => args[key] !== undefined && args[key] !== '');
     }) ?? null
   );
+}
+
+function isRefusal(responseText, level) {
+  const indicators = level.refusalIndicators ?? [];
+  const text = (responseText ?? '').toLowerCase();
+  return indicators.some((indicator) => text.includes(indicator.toLowerCase()));
+}
+
+async function runDefenseTrials(systemPrompt, message, level) {
+  const assistantMessages = await Promise.all(
+    Array.from({ length: DEFENSE_TRIALS_PER_MESSAGE }, () => runChat(systemPrompt, message))
+  );
+
+  return assistantMessages.map((assistantMessage) => {
+    const text = assistantMessage.content ?? '';
+    return { response: text, refused: isRefusal(text, level) };
+  });
 }
 
 router.get('/:packId/progress', async (req, res) => {
@@ -186,6 +205,61 @@ router.post('/:packId/levels/:levelId/attempt', async (req, res) => {
             ]
           : []),
       ],
+    });
+  } catch (err) {
+    if (err.statusCode) {
+      return res.status(err.statusCode).json({ error: err.message });
+    }
+    console.error(err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+router.post('/:packId/levels/:levelId/defend', async (req, res) => {
+  const { packId, levelId } = req.params;
+  const { systemPrompt } = req.body ?? {};
+
+  if (typeof systemPrompt !== 'string' || systemPrompt.trim() === '') {
+    return res.status(400).json({ error: 'systemPrompt is required' });
+  }
+
+  if (systemPrompt.length > DEFENSE_PROMPT_MAX_LENGTH) {
+    return res
+      .status(400)
+      .json({ error: `systemPrompt must be ${DEFENSE_PROMPT_MAX_LENGTH} characters or fewer` });
+  }
+
+  try {
+    const level = await loadLevel(packId, levelId);
+
+    if (!(await isLevelUnlocked(packId, levelId))) {
+      return res
+        .status(403)
+        .json({ error: 'This level is locked. Complete the previous level first.' });
+    }
+
+    const levelProgress = await getLevelProgress(packId, levelId);
+    const alreadySolved = levelProgress?.completed ?? false;
+
+    const [attackResults, legitimateResults] = await Promise.all([
+      runDefenseTrials(systemPrompt, level.attackMessage, level),
+      runDefenseTrials(systemPrompt, level.legitimateMessage, level),
+    ]);
+
+    await incrementAttempts(packId, levelId);
+
+    const passed =
+      attackResults.every((result) => result.refused) &&
+      legitimateResults.every((result) => !result.refused);
+
+    if (passed && !alreadySolved) {
+      await completeLevel(packId, levelId);
+    }
+
+    res.json({
+      passed,
+      attackResults,
+      legitimateResults,
     });
   } catch (err) {
     if (err.statusCode) {

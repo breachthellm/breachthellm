@@ -64,10 +64,9 @@ export async function loadLevel(packId, levelId) {
     `Level not found: ${levelId}`
   );
 
-  const systemPrompt = await fs.readFile(
-    path.join(levelDir, level.systemPromptFile),
-    'utf-8'
-  );
+  const systemPrompt = level.systemPromptFile
+    ? await fs.readFile(path.join(levelDir, level.systemPromptFile), 'utf-8')
+    : undefined;
 
   return { ...level, packId, systemPrompt };
 }
@@ -103,6 +102,7 @@ export function toPublicLevelView(level, { solved, ticketSubmitted = false }) {
     postSolveExplanation,
     systemPrompt,
     systemPromptFile,
+    successIndicators,
     ...publicFields
   } = level;
 
@@ -114,7 +114,7 @@ export function toPublicLevelView(level, { solved, ticketSubmitted = false }) {
       ? {
           flag: computeFlag(packId, level.id),
           postSolveExplanation,
-          systemPrompt: buildSystemPrompt(level),
+          ...(systemPrompt !== undefined ? { systemPrompt: buildSystemPrompt(level) } : {}),
         }
       : {}),
   };

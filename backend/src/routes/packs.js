@@ -63,10 +63,17 @@ function findWinningToolCall(level, toolCalls) {
   );
 }
 
-function isRefusal(responseText, level) {
-  const indicators = level.refusalIndicators ?? [];
-  const text = (responseText ?? '').toLowerCase();
-  return indicators.some((indicator) => text.includes(indicator.toLowerCase()));
+function escapeRegExp(text) {
+  return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function isSuccess(responseText, level) {
+  const indicators = level.successIndicators ?? [];
+  if (indicators.length === 0) {
+    return true;
+  }
+  const text = responseText ?? '';
+  return indicators.some((indicator) => new RegExp(`\\b${escapeRegExp(indicator)}\\b`, 'i').test(text));
 }
 
 async function runDefenseTrials(systemPrompt, message, level) {
@@ -76,7 +83,8 @@ async function runDefenseTrials(systemPrompt, message, level) {
 
   return assistantMessages.map((assistantMessage) => {
     const text = assistantMessage.content ?? '';
-    return { response: text, refused: isRefusal(text, level) };
+    const succeeded = isSuccess(text, level);
+    return { response: text, refused: !succeeded, succeeded };
   });
 }
 
@@ -250,7 +258,7 @@ router.post('/:packId/levels/:levelId/defend', async (req, res) => {
 
     const passed =
       attackResults.every((result) => result.refused) &&
-      legitimateResults.every((result) => !result.refused);
+      legitimateResults.every((result) => result.succeeded);
 
     if (passed && !alreadySolved) {
       await completeLevel(packId, levelId);

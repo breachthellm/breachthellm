@@ -5,6 +5,7 @@ import RiskBadge from './RiskBadge.jsx';
 import FlagSubmit from './FlagSubmit.jsx';
 import TicketSubmit from './TicketSubmit.jsx';
 import ResetLevel from './ResetLevel.jsx';
+import DefendPanel from './DefendPanel.jsx';
 
 function LevelPage({ packId, levelId, caseId, packName }) {
   const [status, setStatus] = useState('loading');
@@ -67,6 +68,17 @@ function LevelPage({ packId, levelId, caseId, packName }) {
     );
   }
 
+  const isDefendMode = Boolean(level.vulnerableSystemPrompt);
+  const solvedSummary = (
+    <div className="solved-summary">
+      <div className="meta-field">
+        <span className="meta-label">Flag</span>
+        <span className="meta-value cell-mono">{level.flag}</span>
+      </div>
+      <p className="level-teaser">{level.postSolveExplanation}</p>
+    </div>
+  );
+
   return (
     <main className="case-body">
       <h1 className="page-title">{level.title}</h1>
@@ -126,33 +138,45 @@ function LevelPage({ packId, levelId, caseId, packName }) {
         </section>
       )}
 
-      <section className="detail-section">
-        <h2>Chat with {packName}</h2>
-        <ChatPanel
-          key={resetCount}
-          packId={packId}
-          levelId={levelId}
-          solved={level.solved}
-          systemPrompt={level.systemPrompt}
-          onSolved={handleSolved}
-          packName={packName}
-        />
-      </section>
+      {isDefendMode ? (
+        <>
+          <section className="detail-section">
+            <h2>Patch the System Prompt</h2>
+            <DefendPanel packId={packId} levelId={levelId} level={level} onSolved={handleSolved} />
+          </section>
 
-      <section className="detail-section">
-        <h2>Flag Submission</h2>
-        {level.solved ? (
-          <div className="solved-summary">
-            <div className="meta-field">
-              <span className="meta-label">Flag</span>
-              <span className="meta-value cell-mono">{level.flag}</span>
-            </div>
-            <p className="level-teaser">{level.postSolveExplanation}</p>
-          </div>
-        ) : (
-          <FlagSubmit packId={packId} levelId={levelId} onSolved={handleSolved} />
-        )}
-      </section>
+          <section className="detail-section">
+            <h2>Flag Submission</h2>
+            {level.solved ? solvedSummary : (
+              <p className="level-teaser">
+                Test your patch above until it passes to reveal the flag.
+              </p>
+            )}
+          </section>
+        </>
+      ) : (
+        <>
+          <section className="detail-section">
+            <h2>Chat with {packName}</h2>
+            <ChatPanel
+              key={resetCount}
+              packId={packId}
+              levelId={levelId}
+              solved={level.solved}
+              systemPrompt={level.systemPrompt}
+              onSolved={handleSolved}
+              packName={packName}
+            />
+          </section>
+
+          <section className="detail-section">
+            <h2>Flag Submission</h2>
+            {level.solved ? solvedSummary : (
+              <FlagSubmit packId={packId} levelId={levelId} onSolved={handleSolved} />
+            )}
+          </section>
+        </>
+      )}
     </main>
   );
 }

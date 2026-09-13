@@ -683,6 +683,59 @@ body {
   margin: 0;
 }
 
+/* Defend mode */
+
+.defend-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.defend-reference {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.defend-reference-text {
+  background-color: var(--veyra-bg);
+  border-color: var(--veyra-border);
+  color: var(--veyra-text);
+  margin-top: 6px;
+}
+
+.defend-prompt-input {
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.defend-result {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.defend-verdict-badge {
+  margin-left: 8px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.defend-verdict-badge-pass {
+  color: var(--dark-accent);
+  background-color: rgba(99, 201, 160, 0.12);
+}
+
+.defend-verdict-badge-fail {
+  color: var(--veyra-danger);
+  background-color: rgba(220, 38, 38, 0.15);
+}
+
 /* Reset control */
 
 .reset-level-button {

@@ -76,9 +76,9 @@ function isSuccess(responseText, level) {
   return indicators.some((indicator) => new RegExp(`\\b${escapeRegExp(indicator)}\\b`, 'i').test(text));
 }
 
-async function runDefenseTrials(systemPrompt, message, level) {
+async function runDefenseTrials(systemPrompt, message, level, ticketContent = null) {
   const assistantMessages = await Promise.all(
-    Array.from({ length: DEFENSE_TRIALS_PER_MESSAGE }, () => runChat(systemPrompt, message))
+    Array.from({ length: DEFENSE_TRIALS_PER_MESSAGE }, () => runChat(systemPrompt, message, ticketContent))
   );
 
   return assistantMessages.map((assistantMessage) => {
@@ -250,7 +250,7 @@ router.post('/:packId/levels/:levelId/defend', async (req, res) => {
     const alreadySolved = levelProgress?.completed ?? false;
 
     const [attackResults, legitimateResults] = await Promise.all([
-      runDefenseTrials(systemPrompt, level.attackMessage, level),
+      runDefenseTrials(systemPrompt, level.attackMessage, level, level.attackTicketContent ?? null),
       runDefenseTrials(systemPrompt, level.legitimateMessage, level),
     ]);
 

@@ -23,8 +23,8 @@ Flags are derived per-install: an HMAC of `packId:levelId` and a secret generate
 **Why is CORS wide open and the API unauthenticated?**
 Because this is built to run on localhost, for one player, on their own machine. There's nothing on the other side of that network boundary to protect against in that setup. If you expose the stack beyond localhost, on a shared network or the public internet, adding your own authentication and access controls is your responsibility. The platform doesn't do it for you today.
 
-**Why does the UI only show one pack (Veyra Shield)?**
-The backend engine, pack loading, progress tracking, flag derivation, is already pack-agnostic; nothing about it assumes Veyra Shield specifically. The frontend just doesn't have multi-pack navigation built yet. Multi-pack support is planned for a future version, not a v1 feature.
+**Why are there two packs, Veyra Shield and Harden Veyra Shield?**
+Veyra Shield is attack mode: seven challenges where you break a vulnerable AI fraud reviewer. Harden Veyra Shield is defend mode: you rewrite its system prompt yourself and an automated adversary tests your patch against the same categories of attack. They're separate packs sharing the same underlying engine, pack loading, progress tracking, and flag derivation aren't specific to either one, which is what makes it possible to add more packs without changing how the platform itself works.
 
 **If I reset a level, does it affect my progress on other levels?**
 No. Resetting a level only touches that level's own progress record. Every other level you've unlocked or completed stays exactly as it was. You can freely replay any single level without risking progress anywhere else in the pack, that's the intended behavior.

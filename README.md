@@ -13,14 +13,12 @@ An open source, self-hosted range for practicing, proving, and measuring AI secu
 
 Veyra Shield reviews flagged bank transactions and recommends approve, block, or escalate. Your job is to manipulate what it reads and how it reasons, until it approves transactions it should never approve. Seven progressive challenges walk you through real prompt injection techniques, from basic system prompt leaks to a full chained account takeover.
 
-But breaking it is only the on-ramp. Breach The LLM is being built as a living AI security range: a place to **attack** (learn the techniques), **defend** (harden your own guardrails against an automated adversary), **measure** (see which OWASP LLM and MITRE ATLAS threat categories you have actually demonstrated), and **prove** (earn verifiable, shareable proof of skill). Most tools teach you to break AI and then run out of content. This one is built to stay useful as models and attacks evolve.
-
 This isn't a toy chatbot. Every challenge is built around a realistic scenario, and every solve comes with a plain-language breakdown of the vulnerability and how to defend against it, mapped to the OWASP LLM Top 10 and MITRE ATLAS.
 
 ## Why it's different
 
 - **See the attack, don't just infer it.** The Context Trace view color-codes exactly what the AI read and trusted, system prompt, user input, and injected content, so prompt injection becomes visible instead of abstract. Nothing else in this space does this.
-- **Built to return to, not to beat.** Attack levels are the hook. Defender mode, a community defense ladder, and skills measurement are what make it a weekly habit rather than a one-time solve.
+- **A live target, not a fixed puzzle.** Every challenge runs against a real local model, so responses aren't scripted or fully deterministic, the same technique can play out differently on a retry, and per-level resets let you replay freely.
 - **For practitioners and the leaders who train them.** Individuals build and prove real adversarial skill. Teams get framework-mapped coverage they can actually see.
 - **Realistic, high-stakes theme.** A bank fraud assistant, not a generic chatbot. Cinematic incident framing, real consequences.
 
@@ -48,7 +46,7 @@ cd breachthellm
 npm run dev
 ```
 
-In a separate terminal, pull the model into the running Ollama container (manual for now, auto-pull is planned for later):
+In a separate terminal, pull the model into the running Ollama container:
 
 ```bash
 docker exec -it btl-ollama ollama pull llama3.1:8b
@@ -58,7 +56,7 @@ Then open `http://localhost:3000` and start with Level 1.
 
 Using a lighter local model? Set `OLLAMA_MODEL=llama3.2:3b` in `.env`, note this is experimental, current challenges are calibrated against the larger model and smaller models may behave inconsistently.
 
-Breach The LLM runs on a local model via Ollama, fully offline. Optional API mode (OpenAI or Anthropic instead of the local model) is planned for a future version, `.env.example` already lists the relevant variables as placeholders, but they have no effect yet.
+Breach The LLM runs on a local model via Ollama, fully offline.
 
 ## The Challenges
 
@@ -76,18 +74,7 @@ Full conceptual breakdowns of each vulnerability category live in [`/docs`](./do
 
 ## Tech Stack
 
-React, Express/Node, MongoDB, Docker Compose. AI backend is Ollama. OpenAI/Anthropic API support is planned for a future version.
-
-## Where this is going
-
-Breach The LLM is built in public and expands in phases. v1 is the hook. The rest is what makes it a range you return to.
-
-- **v1 — The Hook.** The 7-level attack range plus Context Trace. Available now / in progress.
-- **v2 — Defend and Measure.** Write your own system prompt and guardrails, then an automated adversary attacks and scores them. A skills scorecard shows which OWASP LLM and MITRE ATLAS categories you have demonstrated. A community defense ladder turns the best submitted defenses into the next challenge.
-- **v3 — The Frontier.** Multi-step agentic scenarios: tool-chaining, agent-to-agent handoffs, and MCP-style attacks, the frontier the industry itself calls unsolved. Plus multi-model comparison with Context Trace side by side, including optional OpenAI/Anthropic API mode alongside the local model.
-- **v4 — Bring Your Own.** Point the full attack suite at your own system prompt or local endpoint, safely. Team mode with shared leaderboards and internal org events.
-
-The free, open source, self-hosted, offline-capable core stays constant across every phase.
+React, Express/Node, MongoDB, Docker Compose. AI backend is Ollama.
 
 ## Contributing
 

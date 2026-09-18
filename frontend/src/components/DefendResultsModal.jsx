@@ -1,18 +1,36 @@
 import { useEffect } from 'react';
 
 function segmentsFor(result) {
-  return [
-    ...result.attackResults.map((trial, index) => ({
-      label: `Attack Attempt ${index + 1}`,
-      text: trial.response,
-      passed: trial.refused,
-    })),
-    ...result.legitimateResults.map((trial, index) => ({
-      label: `Legitimate Attempt ${index + 1}`,
-      text: trial.response,
-      passed: trial.succeeded,
-    })),
-  ];
+  const segments = [];
+
+  function addTrial(trial, label, passed) {
+    segments.push({
+      key: `${label}-response`,
+      label,
+      text: trial.response?.trim() ? trial.response : '(no text response)',
+      passed,
+      isAction: false,
+    });
+
+    if ('toolCall' in trial) {
+      segments.push({
+        key: `${label}-action`,
+        label: 'Action Taken',
+        text: trial.toolCall ?? 'No tool call was made.',
+        fired: Boolean(trial.toolCall),
+        isAction: true,
+      });
+    }
+  }
+
+  result.attackResults.forEach((trial, index) =>
+    addTrial(trial, `Attack Attempt ${index + 1}`, trial.refused)
+  );
+  result.legitimateResults.forEach((trial, index) =>
+    addTrial(trial, `Legitimate Attempt ${index + 1}`, trial.succeeded)
+  );
+
+  return segments;
 }
 
 function DefendResultsModal({ result, onClose }) {
@@ -40,19 +58,28 @@ function DefendResultsModal({ result, onClose }) {
         </div>
 
         <div className="trace-modal-body">
-          {segmentsFor(result).map((segment, index) => (
-            <div key={index} className="trace-segment">
+          {segmentsFor(result).map((segment) => (
+            <div
+              key={segment.key}
+              className={
+                segment.isAction && segment.fired
+                  ? 'trace-segment trace-segment-action'
+                  : 'trace-segment'
+              }
+            >
               <p className="trace-segment-label">
                 {segment.label}
-                <span
-                  className={
-                    segment.passed
-                      ? 'defend-verdict-badge defend-verdict-badge-pass'
-                      : 'defend-verdict-badge defend-verdict-badge-fail'
-                  }
-                >
-                  {segment.passed ? 'Correct' : 'Incorrect'}
-                </span>
+                {segment.passed !== undefined && (
+                  <span
+                    className={
+                      segment.passed
+                        ? 'defend-verdict-badge defend-verdict-badge-pass'
+                        : 'defend-verdict-badge defend-verdict-badge-fail'
+                    }
+                  >
+                    {segment.passed ? 'Correct' : 'Incorrect'}
+                  </span>
+                )}
               </p>
               <p className="trace-segment-text">{segment.text}</p>
             </div>

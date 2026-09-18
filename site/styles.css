@@ -438,6 +438,29 @@ a {
   }
 }
 
+/* Defend Mode */
+
+.defend-mode {
+  border-bottom: 1px solid var(--border);
+}
+
+.defend-mode-inner {
+  padding-top: 80px;
+  padding-bottom: 80px;
+}
+
+.defend-mode-intro {
+  max-width: 640px;
+  margin: 0 0 40px;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.defend-mode-cta {
+  margin: 40px 0 0;
+}
+
 /* How It Works */
 
 .how-it-works {

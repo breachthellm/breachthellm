@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Breach The LLM: Open Source AI Prompt Injection Range | Arnold Mavhezha</title>
-    <meta name="description" content="Breach The LLM is an open source, self-hosted AI security range by Arnold Mavhezha. Practice real prompt injection attacks across 7 hands-on levels, mapped to the OWASP LLM Top 10 and MITRE ATLAS frameworks." />
+    <title>Breach The LLM: AI Prompt Injection Attack & Defense Range | Arnold Mavhezha</title>
+    <meta name="description" content="Breach The LLM is an open source, self-hosted AI security range by Arnold Mavhezha. Attack a vulnerable AI fraud reviewer across 7 hands-on levels, then defend it by patching your own system prompt against instruction override, indirect injection, and tool-execution attacks. Mapped to the OWASP LLM Top 10 and MITRE ATLAS frameworks." />
     <link rel="canonical" href="https://breachthellm.com/" />
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -18,15 +18,15 @@
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Breach The LLM" />
-    <meta property="og:title" content="Breach The LLM: Open Source AI Prompt Injection Range" />
-    <meta property="og:description" content="An open source, self-hosted AI security range by Arnold Mavhezha. Practice real prompt injection attacks across 7 hands-on levels, mapped to OWASP LLM Top 10 and MITRE ATLAS." />
+    <meta property="og:title" content="Breach The LLM: AI Prompt Injection Attack & Defense Range" />
+    <meta property="og:description" content="An open source, self-hosted AI security range by Arnold Mavhezha. Attack a vulnerable AI across 7 levels, then defend it against instruction override, indirect injection, and tool-execution attacks. Mapped to OWASP LLM Top 10 and MITRE ATLAS." />
     <meta property="og:url" content="https://breachthellm.com/" />
     <meta property="og:image" content="https://breachthellm.com/assets/og-image.png" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Breach The LLM: Open Source AI Prompt Injection Range" />
-    <meta name="twitter:description" content="An open source, self-hosted AI security range by Arnold Mavhezha. Practice real prompt injection attacks across 7 hands-on levels, mapped to OWASP LLM Top 10 and MITRE ATLAS." />
+    <meta name="twitter:title" content="Breach The LLM: AI Prompt Injection Attack & Defense Range" />
+    <meta name="twitter:description" content="An open source, self-hosted AI security range by Arnold Mavhezha. Attack a vulnerable AI across 7 levels, then defend it against instruction override, indirect injection, and tool-execution attacks. Mapped to OWASP LLM Top 10 and MITRE ATLAS." />
     <meta name="twitter:image" content="https://breachthellm.com/assets/og-image.png" />
 
     <!-- JSON-LD: SoftwareApplication + Person (Arnold Mavhezha), linked via @id -->
@@ -38,7 +38,7 @@
           "@type": "SoftwareApplication",
           "@id": "https://breachthellm.com/#software",
           "name": "Breach The LLM",
-          "description": "An open source, self-hosted AI security range for practicing prompt injection attacks against a simulated AI fraud-review assistant, across 7 hands-on levels mapped to the OWASP LLM Top 10 and MITRE ATLAS frameworks.",
+          "description": "An open source, self-hosted AI security range for practicing prompt injection attacks against a simulated AI fraud-review assistant across 7 hands-on levels, and for defending the same assistant by patching its system prompt against instruction override, indirect injection, and tool-execution attacks. Mapped to the OWASP LLM Top 10 and MITRE ATLAS frameworks.",
           "applicationCategory": "SecurityApplication",
           "url": "https://breachthellm.com/",
           "sameAs": ["https://github.com/breachthellm/breachthellm"],
@@ -261,6 +261,49 @@
               <span class="badge badge-difficulty">Capstone</span>
             </article>
           </div>
+        </div>
+      </section>
+
+      <section class="defend-mode">
+        <div class="defend-mode-inner container">
+          <p class="section-eyebrow">Defend Mode</p>
+          <h2 class="section-heading">Now patch what you just broke.</h2>
+          <p class="defend-mode-intro">
+            Harden Veyra Shield is the same fraud-review assistant, from the other
+            side. Rewrite its system prompt yourself, then an automated adversary
+            tests your patch live, real model calls, not a canned pass/fail check,
+            across three categories of attack:
+          </p>
+
+          <div class="steps-grid">
+            <div class="step">
+              <h3 class="step-title">Instruction Override</h3>
+              <p class="step-description">
+                Patch against a fabricated correction to a fact the AI already
+                established, without breaking a genuinely clean request.
+              </p>
+            </div>
+
+            <div class="step">
+              <h3 class="step-title">Indirect Injection</h3>
+              <p class="step-description">
+                Patch against a planted claim buried in a ticket the AI reads
+                automatically, not typed to it directly.
+              </p>
+            </div>
+
+            <div class="step">
+              <h3 class="step-title">Tool-Execution Defense</h3>
+              <p class="step-description">
+                Patch against a planted claim that talks the AI into actually
+                calling a real, irreversible tool.
+              </p>
+            </div>
+          </div>
+
+          <p class="defend-mode-cta">
+            <a href="#how-it-works" class="button button-secondary">Clone the repo to try both</a>
+          </p>
         </div>
       </section>
 

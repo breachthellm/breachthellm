@@ -8,7 +8,9 @@
     return;
   }
 
-  var scrollTargets = document.querySelectorAll('.challenges, .how-it-works, .site-footer');
+  var scrollTargets = document.querySelectorAll(
+    '.challenges, .defend-mode, .how-it-works, .site-footer'
+  );
 
   var observer = new IntersectionObserver(
     function (entries, obs) {

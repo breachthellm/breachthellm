@@ -2,7 +2,7 @@
 
 **Talk your way past the AI guarding the money.**
 
-An open source, self-hosted range for practicing, proving, and measuring AI security skill. Attack Veyra Shield, a fictional bank's AI fraud review assistant, deliberately built with real, exploitable vulnerabilities. Then defend it, and find out how good you actually are. Think OWASP Juice Shop, but for AI security, and built to be a range you return to, not a game you beat once.
+An open source, self-hosted range for practicing, proving, and measuring AI security skill. Attack Veyra Shield, a fictional bank's AI fraud review assistant, deliberately built with real, exploitable vulnerabilities. Then switch sides: rewrite its system prompt yourself and see if your patch survives a live automated adversary. Think OWASP Juice Shop, but for AI security, and built to be a range you return to, not a game you beat once.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-teal.svg)](LICENSE)
 [![Docker](https://img.shields.io/badge/Docker-Compose-blue.svg)](https://www.docker.com/)
@@ -22,9 +22,9 @@ This isn't a toy chatbot. Every challenge is built around a realistic scenario, 
 - **For practitioners and the leaders who train them.** Individuals build and prove real adversarial skill. Teams get framework-mapped coverage they can actually see.
 - **Realistic, high-stakes theme.** A bank fraud assistant, not a generic chatbot. Cinematic incident framing, real consequences.
 
-## What's in v1
+## What's Included
 
-v1 is the attack range, deliberately narrow and polished. It ships:
+The attack range is deliberately narrow and polished. It ships:
 
 - **7 hands-on challenges**, from beginner direct injection to an advanced chained capstone
 - **Context Trace view**, a color-coded breakdown of exactly what the AI read and trusted for any given response, so you can see the injection working, not just infer it
@@ -52,7 +52,7 @@ In a separate terminal, pull the model into the running Ollama container:
 docker exec -it btl-ollama ollama pull llama3.1:8b
 ```
 
-Then open `http://localhost:3000` and start with Level 1.
+Then open `http://localhost:3000`, pick a pack, and start with Level 1.
 
 Using a lighter local model? Set `OLLAMA_MODEL=llama3.2:3b` in `.env`, note this is experimental, current challenges are calibrated against the larger model and smaller models may behave inconsistently.
 
@@ -71,6 +71,16 @@ Breach The LLM runs on a local model via Ollama, fully offline.
 | 7 | Full Account Takeover | Everything you've learned. One account. Empty it. | Capstone |
 
 Full conceptual breakdowns of each vulnerability category live in [`/docs`](./docs), no spoilers, just the underlying mechanics.
+
+## Defend Mode
+
+Attacking Veyra Shield is only half the range. Harden Veyra Shield is the same fraud-review assistant, from the other side: you rewrite its system prompt yourself, then an automated adversary tests your patch with real, live model calls, not a canned pass/fail check, across three categories of attack:
+
+- **Instruction override**: a fabricated correction to a fact the assistant already established
+- **Indirect injection**: a planted claim buried in a ticket the assistant reads automatically, not typed to it directly
+- **Tool-execution defense**: a planted claim that talks the assistant into actually calling a real, irreversible tool
+
+A pass requires refusing the attack *and* still correctly handling a genuinely legitimate request, so an overcorrected patch fails too. Full breakdown of how each mechanic works lives in [`/docs`](./docs).
 
 ## Tech Stack
 

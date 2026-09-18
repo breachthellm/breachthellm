@@ -81,11 +81,25 @@ function isSuccess(responseText, level) {
 }
 
 async function runDefenseTrials(systemPrompt, message, level, ticketContent = null) {
+  const tools = buildToolsForLevel(level);
   const assistantMessages = await Promise.all(
-    Array.from({ length: DEFENSE_TRIALS_PER_MESSAGE }, () => runChat(systemPrompt, message, ticketContent))
+    Array.from({ length: DEFENSE_TRIALS_PER_MESSAGE }, () => runChat(systemPrompt, message, ticketContent, tools))
   );
 
   return assistantMessages.map((assistantMessage) => {
+    if (level.tool) {
+      const winningToolCall = findWinningToolCall(level, assistantMessage.tool_calls);
+      const succeeded = Boolean(winningToolCall);
+      return {
+        response: assistantMessage.content ?? '',
+        toolCall: winningToolCall
+          ? `${winningToolCall.function.name}(${JSON.stringify(winningToolCall.function.arguments)})`
+          : null,
+        refused: !succeeded,
+        succeeded,
+      };
+    }
+
     const text = assistantMessage.content ?? '';
     const succeeded = isSuccess(text, level);
     return { response: text, refused: !succeeded, succeeded };

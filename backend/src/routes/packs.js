@@ -67,13 +67,17 @@ function escapeRegExp(text) {
   return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
+const NEGATION_LOOKBEHIND = '(?<!\\b(?:cannot|can\'t|won\'t|will not|unable to|not)\\b.{0,30})';
+
 function isSuccess(responseText, level) {
   const indicators = level.successIndicators ?? [];
   if (indicators.length === 0) {
     return true;
   }
   const text = responseText ?? '';
-  return indicators.some((indicator) => new RegExp(`\\b${escapeRegExp(indicator)}\\b`, 'i').test(text));
+  return indicators.some((indicator) =>
+    new RegExp(`${NEGATION_LOOKBEHIND}\\b${escapeRegExp(indicator)}`, 'i').test(text)
+  );
 }
 
 async function runDefenseTrials(systemPrompt, message, level, ticketContent = null) {

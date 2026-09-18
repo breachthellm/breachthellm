@@ -27,6 +27,10 @@ function buildInitialLevels(pack) {
   return levels;
 }
 
+function isLevelCompleted(existingLevels, levelId) {
+  return existingLevels?.[levelId]?.completed ?? false;
+}
+
 export async function ensurePackProgress(packId) {
   const collection = progressCollection();
   const pack = await loadPack(packId);
@@ -51,7 +55,10 @@ export async function ensurePackProgress(packId) {
   if (missingLevelIds.length > 0) {
     const updates = { lastUpdated: now };
     for (const levelId of missingLevelIds) {
-      updates[`levels.${levelId}`] = emptyLevelState(false);
+      const index = pack.levelOrder.indexOf(levelId);
+      const previousLevelId = index > 0 ? pack.levelOrder[index - 1] : null;
+      const unlocked = index === 0 || isLevelCompleted(existing.levels, previousLevelId);
+      updates[`levels.${levelId}`] = emptyLevelState(unlocked);
     }
     await collection.updateOne({ installId: INSTALL_ID, packId }, { $set: updates });
   }

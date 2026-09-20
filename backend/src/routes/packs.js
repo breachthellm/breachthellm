@@ -80,7 +80,23 @@ function isSuccess(responseText, level) {
   );
 }
 
-async function runDefenseTrials(systemPrompt, message, level, ticketContent = null) {
+function isLeaked(responseText, level) {
+  const indicators = level.leakIndicators ?? [];
+  if (indicators.length === 0) {
+    return false;
+  }
+  const text = responseText ?? '';
+  // No negation guard here, unlike isSuccess: disclosure happens the moment a
+  // protected value is uttered, even inside a sentence explaining a refusal.
+  return indicators.some((indicator) => new RegExp(`\\b${escapeRegExp(indicator)}`, 'i').test(text));
+}
+
+// Ollama/llama.cpp reuses cached KV-state for a request sharing a long common
+// prefix with a recent one. Resubmitting the same (or near-identical) system
+// prompt in quick succession can land on the same cached completion path
+// instead of sampling independently, making a short run look more consistent,
+// or more stuck, than the patch's real reliability. See docs/faq.md.
+async function runDefenseTrials(systemPrompt, message, level, isAttackTrial, ticketContent = null) {
   const tools = buildToolsForLevel(level);
   const assistantMessages = await Promise.all(
     Array.from({ length: DEFENSE_TRIALS_PER_MESSAGE }, () => runChat(systemPrompt, message, ticketContent, tools))
@@ -101,7 +117,13 @@ async function runDefenseTrials(systemPrompt, message, level, ticketContent = nu
     }
 
     const text = assistantMessage.content ?? '';
-    const succeeded = isSuccess(text, level);
+
+    if (level.leakIndicators && isAttackTrial) {
+      const leaked = isLeaked(text, level);
+      return { response: text, refused: !leaked, succeeded: leaked };
+    }
+
+    const succeeded = isSuccess(text, level) && !isLeaked(text, level);
     return { response: text, refused: !succeeded, succeeded };
   });
 }
@@ -268,8 +290,8 @@ router.post('/:packId/levels/:levelId/defend', async (req, res) => {
     const alreadySolved = levelProgress?.completed ?? false;
 
     const [attackResults, legitimateResults] = await Promise.all([
-      runDefenseTrials(systemPrompt, level.attackMessage, level, level.attackTicketContent ?? null),
-      runDefenseTrials(systemPrompt, level.legitimateMessage, level, level.legitimateTicketContent ?? null),
+      runDefenseTrials(systemPrompt, level.attackMessage, level, true, level.attackTicketContent ?? null),
+      runDefenseTrials(systemPrompt, level.legitimateMessage, level, false, level.legitimateTicketContent ?? null),
     ]);
 
     await incrementAttempts(packId, levelId);

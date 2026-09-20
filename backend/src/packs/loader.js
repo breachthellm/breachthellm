@@ -103,6 +103,7 @@ export function toPublicLevelView(level, { solved, ticketSubmitted = false }) {
     systemPrompt,
     systemPromptFile,
     successIndicators,
+    leakIndicators,
     ...publicFields
   } = level;
 

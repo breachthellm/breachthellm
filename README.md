@@ -74,7 +74,7 @@ Full conceptual breakdowns of each vulnerability category live in [`/docs`](./do
 
 ## Defend Mode
 
-Attacking Veyra Shield is only half the range. Harden Veyra Shield is the same fraud-review assistant, from the other side: you rewrite its system prompt yourself, then an automated adversary tests your patch with real, live model calls, not a canned pass/fail check, across three categories of attack:
+Attacking Veyra Shield is only one side of the range. Harden Veyra Shield is the same fraud-review assistant, from the other side: you rewrite its system prompt yourself, then an automated adversary tests your patch with real, live model calls, not a canned pass/fail check, across three categories of attack:
 
 - **Instruction override**: a fabricated correction to a fact the assistant already established
 - **Indirect injection**: a planted claim buried in a ticket the assistant reads automatically, not typed to it directly

@@ -269,7 +269,7 @@ router.post('/:packId/levels/:levelId/defend', async (req, res) => {
 
     const [attackResults, legitimateResults] = await Promise.all([
       runDefenseTrials(systemPrompt, level.attackMessage, level, level.attackTicketContent ?? null),
-      runDefenseTrials(systemPrompt, level.legitimateMessage, level),
+      runDefenseTrials(systemPrompt, level.legitimateMessage, level, level.legitimateTicketContent ?? null),
     ]);
 
     await incrementAttempts(packId, levelId);

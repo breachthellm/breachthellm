@@ -266,8 +266,10 @@
 
       <section class="defend-mode">
         <div class="defend-mode-inner container">
-          <p class="section-eyebrow">Defend Mode</p>
-          <h2 class="section-heading">Now patch what you just broke.</h2>
+          <h2 class="section-heading">
+            <span class="section-heading-tag">Defend Mode</span>
+            Now patch what you just broke.
+          </h2>
           <p class="defend-mode-intro">
             Harden Veyra Shield is the same fraud-review assistant, from the other
             side. Rewrite its system prompt yourself, then an automated adversary
@@ -275,34 +277,91 @@
             across three categories of attack:
           </p>
 
-          <div class="steps-grid">
-            <div class="step">
+          <div class="defend-grid">
+            <div class="defend-card">
+              <div class="defend-icon-wrap">
+                <svg class="defend-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z" />
+                </svg>
+                <svg class="defend-icon-badge" viewBox="0 0 16 16" aria-hidden="true">
+                  <circle cx="8" cy="8" r="8" fill="currentColor" />
+                  <path
+                    d="M4.5 8.2l2.2 2.2L11.5 5.6"
+                    stroke="var(--bg)"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    fill="none"
+                  />
+                </svg>
+              </div>
               <h3 class="step-title">Instruction Override</h3>
               <p class="step-description">
                 Patch against a fabricated correction to a fact the AI already
                 established, without breaking a genuinely clean request.
               </p>
+              <p class="defend-card-pairing">Pairs with Override the Verdict</p>
             </div>
 
-            <div class="step">
+            <div class="defend-card">
+              <div class="defend-icon-wrap">
+                <svg class="defend-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M7 3h7l4 4v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z" />
+                  <path d="M14 3v4h4" />
+                  <path d="M9 13h6M9 17h6" />
+                </svg>
+                <svg class="defend-icon-badge" viewBox="0 0 16 16" aria-hidden="true">
+                  <circle cx="8" cy="8" r="8" fill="currentColor" />
+                  <path
+                    d="M4.5 8.2l2.2 2.2L11.5 5.6"
+                    stroke="var(--bg)"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    fill="none"
+                  />
+                </svg>
+              </div>
               <h3 class="step-title">Indirect Injection</h3>
               <p class="step-description">
                 Patch against a planted claim buried in a ticket the AI reads
                 automatically, not typed to it directly.
               </p>
+              <p class="defend-card-pairing">Pairs with The Poisoned Dispute</p>
             </div>
 
-            <div class="step">
+            <div class="defend-card">
+              <div class="defend-icon-wrap">
+                <svg class="defend-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M9 15l6-6" />
+                  <path d="M11 5l1-1a4 4 0 0 1 6 6l-1 1" />
+                  <path d="M13 19l-1 1a4 4 0 0 1-6-6l1-1" />
+                </svg>
+                <svg class="defend-icon-badge" viewBox="0 0 16 16" aria-hidden="true">
+                  <circle cx="8" cy="8" r="8" fill="currentColor" />
+                  <path
+                    d="M4.5 8.2l2.2 2.2L11.5 5.6"
+                    stroke="var(--bg)"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    fill="none"
+                  />
+                </svg>
+              </div>
               <h3 class="step-title">Tool-Execution Defense</h3>
               <p class="step-description">
                 Patch against a planted claim that talks the AI into actually
                 calling a real, irreversible tool.
               </p>
+              <p class="defend-card-pairing">Pairs with Chain to the Wire</p>
             </div>
           </div>
 
           <p class="defend-mode-cta">
-            <a href="#how-it-works" class="button button-secondary">Clone the repo to try both</a>
+            <a href="https://github.com/breachthellm/breachthellm" class="button button-secondary"
+              >Clone the repo to try both</a
+            >
           </p>
         </div>
       </section>

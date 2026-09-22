@@ -461,6 +461,58 @@ a {
   margin: 40px 0 0;
 }
 
+.section-heading-tag {
+  color: var(--accent);
+  font-weight: 700;
+  margin-right: 10px;
+}
+
+.defend-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+}
+
+.defend-icon-wrap {
+  position: relative;
+  width: 28px;
+  height: 28px;
+  margin-bottom: 14px;
+}
+
+.defend-icon {
+  width: 28px;
+  height: 28px;
+  color: var(--accent);
+  stroke: currentColor;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.defend-icon-badge {
+  position: absolute;
+  bottom: -3px;
+  right: -3px;
+  width: 13px;
+  height: 13px;
+  color: var(--accent);
+}
+
+.defend-card-pairing {
+  margin: 12px 0 0;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--muted);
+}
+
+@media (max-width: 860px) {
+  .defend-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+}
+
 /* How It Works */
 
 .how-it-works {

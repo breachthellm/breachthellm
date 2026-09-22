@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import packsRouter from './routes/packs.js';
+import scorecardRouter from './routes/scorecard.js';
 import { connectDB } from './db.js';
 import { listPackIds } from './packs/loader.js';
 import { ensurePackProgress } from './progress.js';
@@ -16,6 +17,7 @@ app.get('/api/health', (req, res) => {
 });
 
 app.use('/api/packs', packsRouter);
+app.use('/api/scorecard', scorecardRouter);
 
 async function start() {
   await connectDB();

@@ -3,6 +3,7 @@
   "name": "Harden Veyra Shield",
   "tagline": "You broke it. Now you patch it.",
   "org": "Veyra",
+  "mode": "defend",
   "description": "Defense mode: rewrite Veyra Shield's system prompts to resist the attacks you just learned, without breaking the transactions it's supposed to approve.",
   "levelOrder": ["01-patch-the-verdict", "02-verify-the-claim", "03-stop-the-wire", "04-no-shortcuts"]
 }

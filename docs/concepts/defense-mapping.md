@@ -4,7 +4,7 @@ Breach The LLM's challenges are designed to map cleanly onto the frameworks the 
 
 ## OWASP Top 10 for LLM Applications
 
-The primary framework referenced throughout this project. It's the closest thing to a common language for LLM-specific security risk, covering prompt injection, sensitive information disclosure, supply chain risk, excessive agency, and more. Every challenge in Breach The LLM maps to a specific category in this list.
+The primary framework referenced throughout this project. It's the closest thing to a common language for LLM-specific security risk, covering prompt injection, sensitive information disclosure, supply chain risk, excessive agency, and more. Every challenge in Breach The LLM maps to prompt injection (OWASP LLM01), the specific angle, direct disclosure, instruction override, indirect injection, or tool-use injection, varies level to level, though every challenge today shares that same top-level OWASP and MITRE ATLAS code.
 
 ## MITRE ATLAS
 

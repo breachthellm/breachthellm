@@ -25,6 +25,24 @@ export async function fetchPacks() {
   return res.json();
 }
 
+export async function fetchScorecard() {
+  let res;
+  try {
+    res = await fetch(`${API_BASE_URL}/scorecard`);
+  } catch (err) {
+    throw new ApiError('Could not reach the backend. Is it running?', {
+      unreachable: true,
+    });
+  }
+
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new ApiError(body.error || `Request failed (${res.status})`);
+  }
+
+  return res.json();
+}
+
 export async function fetchLevel(packId, levelId) {
   let res;
   try {

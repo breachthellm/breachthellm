@@ -1006,3 +1006,124 @@ body {
   font-size: 14px;
   color: var(--dark-muted);
 }
+
+/* Scorecard page, platform-level, our own brand chrome, same register as Landing */
+
+.scorecard {
+  flex: 1;
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.scorecard-title {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-on-dark);
+}
+
+.scorecard-status {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--dark-muted);
+}
+
+.scorecard-status-error {
+  color: var(--veyra-danger);
+}
+
+.landing-scorecard-link {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--dark-accent);
+  text-decoration: none;
+}
+
+.landing-scorecard-link:hover {
+  text-decoration: underline;
+}
+
+.scorecard-grid {
+  width: 100%;
+  max-width: 640px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.scorecard-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px 24px;
+  background-color: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+}
+
+.scorecard-card-name {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-on-dark);
+}
+
+.scorecard-card-meta {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--dark-muted);
+}
+
+.scorecard-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.scorecard-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.scorecard-pill::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: currentColor;
+}
+
+.scorecard-pill-done {
+  color: var(--dark-accent);
+  background-color: rgba(99, 201, 160, 0.12);
+}
+
+.scorecard-pill-pending {
+  color: var(--dark-muted);
+  background-color: transparent;
+  border: 1px solid var(--dark-muted);
+}
+
+.scorecard-pill-na {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--dark-muted);
+  opacity: 0.6;
+}

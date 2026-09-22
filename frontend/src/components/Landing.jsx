@@ -36,15 +36,20 @@ function Landing() {
       {status === 'error' && <p className="landing-status landing-status-error">{error}</p>}
 
       {status === 'loaded' && (
-        <div className="pack-list">
-          {packs.map((pack) => (
-            <Link key={pack.id} to={`/pack/${pack.id}`} className="pack-card">
-              <span className="pack-card-org">{pack.org}</span>
-              <span className="pack-card-name">{pack.name}</span>
-              <span className="pack-card-tagline">{pack.tagline}</span>
-            </Link>
-          ))}
-        </div>
+        <>
+          <div className="pack-list">
+            {packs.map((pack) => (
+              <Link key={pack.id} to={`/pack/${pack.id}`} className="pack-card">
+                <span className="pack-card-org">{pack.org}</span>
+                <span className="pack-card-name">{pack.name}</span>
+                <span className="pack-card-tagline">{pack.tagline}</span>
+              </Link>
+            ))}
+          </div>
+          <Link to="/scorecard" className="landing-scorecard-link">
+            View your skills scorecard →
+          </Link>
+        </>
       )}
     </main>
   );
